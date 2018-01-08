@@ -22,27 +22,31 @@ Você pode também:
 
 Para criar nova variável:
 ```sh
-$ java -jar Environment.jar create NOME_DA_VARIAVEL "valor da variável"
+$ sudo java -jar Environment.jar create NOME_DA_VARIAVEL "valor da variável"
 ```
 
 Para apagar variáves:
 ```sh
-$ java -jar Environment.jar delete NOME_DA_VARIAVEL
+$ sudo java -jar Environment.jar delete NOME_DA_VARIAVEL
 ```
 
 Para listar variáves:
 ```sh
 Ainda em construção
 ```
+Para ver a versão corrente:
+```sh
+Ainda em construção
+```
 
 Para criar variável e adicionar ao PATH:
 ```sh
-$ java -jar Environment.jar createOnPath NOME_DA_VARIAVEL "valor da variável"
+$ sudo java -jar Environment.jar createOnPath NOME_DA_VARIAVEL "valor da variável"
 ```
 
 Para criar variável e adicionar ao PATH com complemento na variável:
 ```sh
-$ java -jar Environment.jar createOnPath NOME_DA_VARIAVEL "valor da variável" "complemento" 
+$ sudo java -jar Environment.jar createOnPath NOME_DA_VARIAVEL "valor da variável" "complemento" 
 ```
 
 > Se você não tem a oportunidade 
