@@ -14,6 +14,7 @@ public class Main {
 	private static String SYSTEM_START_FILE = "/etc/environment";  
 	private static Map<String, Variable> variables = new HashMap<String, Variable>();
 	private static Path path = new Path();
+	private static final String VERSION = "Environment app, Version 0.0.2";
 		
 	public static void main(String[] args) {
 		Main.readFile(SYSTEM_START_FILE, new LineListener() {			
@@ -90,11 +91,23 @@ public class Main {
 				if(result == null) {				
 					if(args.length == 3) {
 						putVariableOnPath(path, variable);
-						writeFile(SYSTEM_START_FILE, montFile(path, variables));					
+						writeFile(SYSTEM_START_FILE, montFile(path, variables));
+						try {
+							generateBashProfile(path, variables);
+						} catch (Exception e) {
+							e.printStackTrace();
+							System.out.println("Ocorreu um erro ao gerar /etc/.environment. Para criar as novas variáveis reinicie o computador");
+						}
 					} else if(args.length == 4) {	
 						variable.setAdditionalPath(args[3]);
 						putVariableOnPath(path, variable);
 						writeFile(SYSTEM_START_FILE, montFile(path, variables));
+						try {
+							generateBashProfile(path, variables);
+						} catch (Exception e) {
+							e.printStackTrace();
+							System.out.println("Ocorreu um erro ao gerar /etc/.environment. Para criar as novas variáveis reinicie o computador");
+						}
 					} else {
 						System.out.println("Parametros inválidos");
 					}
@@ -102,7 +115,19 @@ public class Main {
 					System.out.println("Variável já existente");
 				}
 				break;
-			}	
+			}
+			case LIST:{
+				System.out.println();
+				System.out.println(montBashFile(path, variables));
+				System.out.println();
+				break;
+			}
+			case VERSION:{
+				System.out.println();
+				System.out.println(VERSION);
+				System.out.println();
+				break;
+			}
 			default:
 				System.out.println("Comando inválido");
 				break;
@@ -160,8 +185,20 @@ public class Main {
 	}
 	
 	public static void generateBashProfile(Path path, Map<String, Variable> variables) throws IOException, InterruptedException {
-		String bash = "/etc/.environment";		
-		writeFile(bash, montBashFile(path, variables));		
+		String bash = "/etc/bash.bashrc";
+		String bashRcBody = readBashRc(bash);
+		String bashFile = montBashFile(path, variables);
+		
+		StringBuilder bashRcWithNewVariables = new StringBuilder();
+		bashRcWithNewVariables.append(bashRcBody);
+		bashRcWithNewVariables.append(System.lineSeparator());
+		bashRcWithNewVariables.append(bashFile);	
+						
+		writeFile(bash, bashRcWithNewVariables.toString());			 
+		Process process = Runtime.getRuntime().exec("sudo source " + bash);         
+        process.waitFor();
+           
+        writeFile(bash, bashRcBody);
 	}
 	
 	public static void writeFile(String fullFileName, String content) {
@@ -215,8 +252,7 @@ public class Main {
 	
 	public static String montBashFile(Variable path, Map<String, Variable> variables) {
 		StringBuffer environment = new StringBuffer();
-		
-		environment.append("export ");
+				
 		environment.append(path.getName());
 	    environment.append("=");
 	    environment.append("\"");
@@ -224,8 +260,7 @@ public class Main {
 	    environment.append("\"");
 	    environment.append(System.lineSeparator());
 						
-		for(Map.Entry<String, Variable> entry : variables.entrySet()) {	
-			environment.append("export ");
+		for(Map.Entry<String, Variable> entry : variables.entrySet()) {				
 		    environment.append(entry.getKey());
 		    environment.append("=");
 		    environment.append("\"");
@@ -274,6 +309,37 @@ public class Main {
 		}		
 	}
 	
+	@SuppressWarnings("finally")
+	public static String readBashRc(String fullFileName) {
+		StringBuffer bodyOfFile = new StringBuffer();
+		BufferedReader br = null;		
+		try {	
+			File file = new File(fullFileName);
+			if(!file.exists()){
+				file.createNewFile();
+				return bodyOfFile.toString();
+			}
+			
+			br = new BufferedReader(new FileReader(fullFileName));
+			String line = br.readLine();
+		    while(line != null) {
+		    	bodyOfFile.append(line); 
+		    	bodyOfFile.append(System.lineSeparator());
+		        line = br.readLine();
+		    }		    
+		} catch(IOException ioe) {
+			ioe.printStackTrace();
+		} finally {
+		    try {
+				br.close();
+			} catch (IOException e) {				
+				e.printStackTrace();
+			}
+		    		    
+		    return bodyOfFile.toString();
+		}
+	}
+	
 	public interface LineListener {
 		void onPathListener(Path path);
 		void onLineListener(Variable variable);
@@ -281,9 +347,11 @@ public class Main {
 	}
 			 		
 	public enum Command {
-		CREATE("create"),
-		DELETE("delete"),
-		CREATE_ON_PATH("createOnPath"),
+		CREATE("--create"),
+		DELETE("--delete"),
+		CREATE_ON_PATH("--createOnPath"),
+		LIST("--list"),
+		VERSION("--version"),
 		INVALID_COMMAND(null);
 		
 		private String value;
@@ -303,6 +371,10 @@ public class Main {
 				return Command.DELETE;
 			} else if(CREATE_ON_PATH.value.equals(command)) {
 				return Command.CREATE_ON_PATH;
+			} else if(LIST.value.equals(command)) {
+				return Command.LIST;
+			} else if(VERSION.value.equals(command)) {
+				return Command.VERSION;
 			}
 			
 			return INVALID_COMMAND;
