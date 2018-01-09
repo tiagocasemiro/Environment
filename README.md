@@ -1,4 +1,4 @@
-# Environment Manager on Linux
+# Environment Manager on Linux - Version 0.0.2
 
 Linkedin: [Tiago Casemiro](https://www.linkedin.com/in/tiago-p-58b45228)
 
@@ -21,31 +21,31 @@ Você também pode...
 
 Para criar nova variável:
 ```sh
-$ sudo java -jar Environment.jar create NOME_DA_VARIAVEL "valor da variável"
+$ sudo java -jar Environment.jar --create NOME_DA_VARIAVEL "valor da variável"
 ```
 
 Para apagar variáves:
 ```sh
-$ sudo java -jar Environment.jar delete NOME_DA_VARIAVEL
+$ sudo java -jar Environment.jar --delete NOME_DA_VARIAVEL
 ```
 
 Para listar variáves:
 ```sh
-...em construção :D
+$ java -jar Environment.jar --list 
 ```
 Para ver a versão corrente:
 ```sh
-...em construção :D
+$ java -jar Environment.jar --version 
 ```
 
 Para criar variável e adicionar ao PATH:
 ```sh
-$ sudo java -jar Environment.jar createOnPath NOME_DA_VARIAVEL "valor da variável"
+$ sudo java -jar Environment.jar --createOnPath NOME_DA_VARIAVEL "valor da variável"
 ```
 
 Para criar variável e adicionar ao PATH com complemento na variável:
 ```sh
-$ sudo java -jar Environment.jar createOnPath NOME_DA_VARIAVEL "valor da variável" "complemento" 
+$ sudo java -jar Environment.jar --createOnPath NOME_DA_VARIAVEL "valor da variável" "complemento" 
 ```
 Após execução do Enviroment.jar será necessário reiniciar o terminal. Caso você não queira reiniciar o terminal, poderá executar o seguinte comando no terminal de trabaho.
 ```sh
