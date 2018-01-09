@@ -1,4 +1,4 @@
-# Environment Manager
+# Environment Manager on Linux
 
 Linkedin: [Tiago Casemiro](https://www.linkedin.com/in/tiago-p-58b45228)
 
@@ -6,11 +6,11 @@ Linkedin: [Tiago Casemiro](https://www.linkedin.com/in/tiago-p-58b45228)
    > Com apenas 1 comando voce pode...
     
 # Features!
-  - Criar
-  - Apagar
-  - Listar 
+  - Criar variáveis de ambiente no linux
+  - Apagar variáveis de ambiente no linux
+  - Listar variáveis de ambiente no linux
  
-Você pode também:
+Você também pode...
  - Criar e adicionar ao PATH
  - Criar e adicionar ao PATH com um complemento na variável
 
@@ -32,11 +32,11 @@ $ sudo java -jar Environment.jar delete NOME_DA_VARIAVEL
 
 Para listar variáves:
 ```sh
-Ainda em construção
+...em construção :D
 ```
 Para ver a versão corrente:
 ```sh
-Ainda em construção
+...em construção :D
 ```
 
 Para criar variável e adicionar ao PATH:
