@@ -48,6 +48,11 @@ Para criar variável e adicionar ao PATH com complemento na variável:
 ```sh
 $ sudo java -jar Environment.jar createOnPath NOME_DA_VARIAVEL "valor da variável" "complemento" 
 ```
+Após execução do Enviroment.jar será necessário reinicias o computador. Caso você não queira reiniciar o computador, poderá executar o seguinte comando no terminal de trabaho.
+```sh
+$ source /etc/.environment 
+```
+Após execução do comando variáveis temporárias serão criadas apenas no terminal em que o comando foi executado.
 
 > Se você não tem a oportunidade 
 > de fazer grandes coisas,
