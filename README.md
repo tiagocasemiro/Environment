@@ -19,7 +19,7 @@ Você também pode...
 
 [Baixe](https://github.com/tiagocasemiro/Environment/blob/master/Environment.jar) o Environment.jar e execute no terminal com os devidos parametros.
 
-## Parametros
+## Como usar
 
 Para criar nova variável:
 ```sh
