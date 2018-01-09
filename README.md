@@ -7,9 +7,9 @@ Linkedin: [Tiago Casemiro](https://www.linkedin.com/in/tiago-p-58b45228)
     
 # Features!
 
-  - Criar variáveis de ambiente no linux
-  - Apagar variáveis de ambiente no linux
-  - Listar variáveis de ambiente no linux
+  * Criar variáveis de ambiente no linux
+  * Apagar variáveis de ambiente no linux
+  * Listar variáveis de ambiente no linux
  
 Você também pode...
  - Criar e adicionar ao PATH
