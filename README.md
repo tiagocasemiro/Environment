@@ -54,9 +54,6 @@ $ source /etc/.environment
 ```
 Após execução do comando variáveis temporárias serão criadas apenas no terminal em que o comando foi executado.
 
-<br/>
-<br/>
-
 <blockquote>
   <p>
    Se você não tem a oportunidade <br/>
