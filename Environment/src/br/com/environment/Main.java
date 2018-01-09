@@ -52,7 +52,13 @@ public class Main {
 				Variable result = variables.put(variable.getName(), variable);				
 				if(result == null) {
 					if(args.length == 3) {					
-						writeFile(SYSTEM_START_FILE, variables);
+						writeFile(SYSTEM_START_FILE, montFile(path, variables));
+						try {
+							generateBashProfile(path, variables);
+						} catch (Exception e) {
+							e.printStackTrace();
+							System.out.println("Ocorreu um erro ao executar /etc/.environment. Para criar as novas variáveis reinicie o computador");
+						}
 					} else {
 						System.out.println("Parametros inválidos");
 					}
@@ -67,7 +73,7 @@ public class Main {
 				if(result != null){
 					if(args.length == 2) {	
 						removeVariableFromPath(path, variable);
-						writeFile(SYSTEM_START_FILE, variables);					
+						writeFile(SYSTEM_START_FILE, montFile(path, variables));					
 					} else {
 						System.out.println("Parametros inválidos");
 					}
@@ -84,11 +90,11 @@ public class Main {
 				if(result == null) {				
 					if(args.length == 3) {
 						putVariableOnPath(path, variable);
-						writeFile(SYSTEM_START_FILE, variables);					
+						writeFile(SYSTEM_START_FILE, montFile(path, variables));					
 					} else if(args.length == 4) {	
 						variable.setAdditionalPath(args[3]);
 						putVariableOnPath(path, variable);
-						writeFile(SYSTEM_START_FILE, variables);
+						writeFile(SYSTEM_START_FILE, montFile(path, variables));
 					} else {
 						System.out.println("Parametros inválidos");
 					}
@@ -152,20 +158,25 @@ public class Main {
 		
 		path.setValue(value);
 	}
-			
-	public static void writeFile(String fullFileName, Map<String, Variable> variables) {
+	
+	public static void generateBashProfile(Path path, Map<String, Variable> variables) throws IOException, InterruptedException{
+		String bash = "/etc/.environment";		
+		writeFile(bash, montBashFile(path, variables));		
+	}
+	
+	public static void writeFile(String fullFileName, String content) {
 		BufferedWriter bw = null;
 		FileWriter fw = null;
 		try {			
 			File file = new File(fullFileName);
 			if(file.exists()){
-				file.delete();
-				file.createNewFile();
+				file.delete();				
 			}
+			file.createNewFile();
 			
 			fw = new FileWriter(fullFileName);			
 			bw = new BufferedWriter(fw);
-			bw.write(montFile(path, variables));
+			bw.write(content);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -201,10 +212,39 @@ public class Main {
 		
 		return environment.toString();
 	}
+	
+	public static String montBashFile(Variable path, Map<String, Variable> variables){
+		StringBuffer environment = new StringBuffer();
+		
+		environment.append("export ");
+		environment.append(path.getName());
+	    environment.append("=");
+	    environment.append("\"");
+	    environment.append(path.getValue());
+	    environment.append("\"");
+	    environment.append(System.lineSeparator());
+						
+		for(Map.Entry<String, Variable> entry : variables.entrySet()) {	
+			environment.append("export ");
+		    environment.append(entry.getKey());
+		    environment.append("=");
+		    environment.append("\"");
+		    environment.append(entry.getValue().getValue());
+		    environment.append("\"");
+		    environment.append(System.lineSeparator());
+		}
+		
+		return environment.toString();
+	}
 		
 	public static void readFile(String fullFileName, Main.LineListener lineListener) {
 		BufferedReader br = null;
-		try {		   
+		try {	
+			File file = new File(fullFileName);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			
 			br = new BufferedReader(new FileReader(fullFileName));
 		    String line = br.readLine();
 		    while(line != null) {
