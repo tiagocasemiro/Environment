@@ -53,11 +53,15 @@ Após execução do Enviroment.jar será necessário reiniciar o terminal. Caso 
 $ source /etc/.environment 
 ```
 Após execução do comando variáveis temporárias serão criadas apenas no terminal em que o comando foi executado.
-<br/><br/>
-<p>
-> Se você não tem a oportunidade <br/>
-> de fazer grandes coisas, <br/>
-> pode fazer pequenas coisas <br/>
-> de forma grandiosa. <br/>
-</p>
+
 <br/>
+<br/>
+
+<blockquote>
+  <p>
+   Se você não tem a oportunidade <br/>
+   de fazer grandes coisas, <br/>
+   pode fazer pequenas coisas <br/>
+   de forma grandiosa. <br/>
+  </p>  
+</blockquote>
