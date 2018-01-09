@@ -6,7 +6,6 @@ Linkedin: [Tiago Casemiro](https://www.linkedin.com/in/tiago-p-58b45228)
    > Com apenas 1 comando voce pode...
     
 ## Features
-  
   * Apagar variáveis de ambiente no linux
   * Listar variáveis de ambiente no linux
   * Criar variáveis de ambiente no linux
