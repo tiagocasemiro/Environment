@@ -57,7 +57,7 @@ public class Main {
 							generateBashProfile(path, variables);
 						} catch (Exception e) {
 							e.printStackTrace();
-							System.out.println("Ocorreu um erro ao executar /etc/.environment. Para criar as novas variáveis reinicie o computador");
+							System.out.println("Ocorreu um erro ao gerar /etc/.environment. Para criar as novas variáveis reinicie o computador");
 						}
 					} else {
 						System.out.println("Parametros inválidos");
@@ -159,7 +159,7 @@ public class Main {
 		path.setValue(value);
 	}
 	
-	public static void generateBashProfile(Path path, Map<String, Variable> variables) throws IOException, InterruptedException{
+	public static void generateBashProfile(Path path, Map<String, Variable> variables) throws IOException, InterruptedException {
 		String bash = "/etc/.environment";		
 		writeFile(bash, montBashFile(path, variables));		
 	}
@@ -191,7 +191,7 @@ public class Main {
 		}
 	}
 	
-	public static String montFile(Variable path, Map<String, Variable> variables){
+	public static String montFile(Variable path, Map<String, Variable> variables) {
 		StringBuffer environment = new StringBuffer();
 		
 		environment.append(path.getName());
@@ -213,7 +213,7 @@ public class Main {
 		return environment.toString();
 	}
 	
-	public static String montBashFile(Variable path, Map<String, Variable> variables){
+	public static String montBashFile(Variable path, Map<String, Variable> variables) {
 		StringBuffer environment = new StringBuffer();
 		
 		environment.append("export ");
@@ -274,13 +274,13 @@ public class Main {
 		}		
 	}
 	
-	public interface LineListener{
+	public interface LineListener {
 		void onPathListener(Path path);
 		void onLineListener(Variable variable);
 		void onFinish();
 	}
 			 		
-	public enum Command{
+	public enum Command {
 		CREATE("create"),
 		DELETE("delete"),
 		CREATE_ON_PATH("createOnPath"),
