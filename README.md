@@ -5,7 +5,7 @@ Linkedin: [Tiago Casemiro](https://www.linkedin.com/in/tiago-p-58b45228)
    > Esta aplicação facilita a gerencia de variaveis de ambiente.
    > Com apenas 1 comando voce pode...
     
-# Features!
+## Features
 
   * Criar variáveis de ambiente no linux
   * Apagar variáveis de ambiente no linux
