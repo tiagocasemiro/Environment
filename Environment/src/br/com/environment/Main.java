@@ -116,14 +116,12 @@ public class Main {
 				}
 				break;
 			}
-			case LIST:{
-				System.out.println();
+			case LIST:{				
 				System.out.println(montBashFile(path, variables));
 				System.out.println();
 				break;
 			}
-			case VERSION:{
-				System.out.println();
+			case VERSION:{				
 				System.out.println(VERSION);
 				System.out.println();
 				break;
@@ -175,10 +173,15 @@ public class Main {
 	public static void putVariableOnPath(Variable path, Variable variable) {
 		String value = path.getValue();
 		
+		char[] additionalPath = variable.getAdditionalPath().toCharArray();
+		if(additionalPath.length > 0 && additionalPath[0] == '/'){
+			variable.setAdditionalPath(variable.getAdditionalPath().substring(1, variable.getAdditionalPath().length()));
+		}
+				
 		if(variable.getAdditionalPath() != null) {
 			value = value + File.pathSeparator + "$" + variable.getName() + File.separator + variable.getAdditionalPath(); 			
 		} else {
-			value = value + ":$" + variable.getName();			
+			value = value + File.pathSeparator + "$" + variable.getName();			
 		}
 		
 		path.setValue(value);
@@ -186,6 +189,8 @@ public class Main {
 	
 	public static void generateBashProfile(Path path, Map<String, Variable> variables) throws IOException, InterruptedException {
 		String bash = "/etc/bash.bashrc";
+		String bashSupport = "/etc/.environment";
+		
 		String bashRcBody = readBashRc(bash);
 		String bashFile = montBashFile(path, variables);
 		
@@ -199,6 +204,7 @@ public class Main {
         process.waitFor();
            
         writeFile(bash, bashRcBody);
+        writeFile(bashSupport, bashFile);
 	}
 	
 	public static void writeFile(String fullFileName, String content) {
@@ -235,16 +241,15 @@ public class Main {
 	    environment.append("=");
 	    environment.append("\"");
 	    environment.append(path.getValue());
-	    environment.append("\"");
-	    environment.append(System.lineSeparator());
+	    environment.append("\"");	   
 						
-		for(Map.Entry<String, Variable> entry : variables.entrySet()) {		    
+		for(Map.Entry<String, Variable> entry : variables.entrySet()) {	
+			environment.append(System.lineSeparator());
 		    environment.append(entry.getKey());
 		    environment.append("=");
 		    environment.append("\"");
 		    environment.append(entry.getValue().getValue());
-		    environment.append("\"");
-		    environment.append(System.lineSeparator());
+		    environment.append("\"");		    
 		}
 		
 		return environment.toString();
