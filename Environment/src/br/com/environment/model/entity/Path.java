@@ -1,4 +1,4 @@
-package br.com.environment;
+package br.com.environment.model.entity;
 
 import java.util.Arrays;
 import java.util.List;

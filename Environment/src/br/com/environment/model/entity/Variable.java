@@ -1,4 +1,4 @@
-package br.com.environment;
+package br.com.environment.model.entity;
 
 public class Variable {
 	private String name;
