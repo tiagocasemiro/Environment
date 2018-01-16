@@ -5,12 +5,14 @@ Linkedin: [Tiago Casemiro](https://www.linkedin.com/in/tiago-p-58b45228)
 ##### Esta aplicação facilita a gerência de variáveis de ambiente. <br/>Com apenas 1 comando voce pode...
      
 ## Features
-  * Apagar variáveis de ambiente no linux
-  * Listar variáveis de ambiente no linux
-  * Criar variáveis de ambiente no linux
-  * Verificar a versão corrente
+  * Apagar variáveis de ambiente no linux.
+  * Listar variáveis de ambiente no linux.
+  * Criar variáveis de ambiente no linux.
+
+  
    
 Você também pode...
+
  - Criar e adicionar ao PATH
  - Criar e adicionar ao PATH com um complemento na variável
  - Adicionar variáel já existente ao PATH
