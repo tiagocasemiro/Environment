@@ -13,7 +13,7 @@ public class EnvironmentManager {
 	public static String SYSTEM_START_FILE = "/etc/environment";  
 	public static Map<String, Variable> variables = new HashMap<String, Variable>();
 	public static Path path = new Path();
-	public static final String VERSION = "Environment app, Version 0.1.0";
+	public static final String VERSION = "Environment app, Version v0.2.0";
 	
 	
 	public static Variable variableFromLine(String line) {
@@ -33,7 +33,7 @@ public class EnvironmentManager {
 		StringBuffer finalPath = new StringBuffer();		
 		String name = "$" + variable.getName();		
 		String nameWithAdditionalPath = "";
-		
+				
 		if(variable.getAdditionalPath() != null){
 			nameWithAdditionalPath = "$" + variable.getName() + File.separator + variable.getAdditionalPath();
 		}
@@ -46,18 +46,21 @@ public class EnvironmentManager {
 				
 				finalPath.append(path.getPath().get(index));				
 			}	
-		}		
+		}
+		
+		path.setValue(finalPath.toString());		
 	}
 
 	public static void putVariableOnPath(Variable path, Variable variable) {
 		String value = path.getValue();
-		
-		char[] additionalPath = variable.getAdditionalPath().toCharArray();
-		if(additionalPath.length > 0 && additionalPath[0] == '/'){
-			variable.setAdditionalPath(variable.getAdditionalPath().substring(1, variable.getAdditionalPath().length()));
-		}
-				
+						
 		if(variable.getAdditionalPath() != null) {
+			char[] additionalPath = variable.getAdditionalPath().toCharArray();
+			String characterVaidation = String.valueOf(additionalPath[0]);
+			
+			if(additionalPath.length > 0 && characterVaidation.equals(File.separator)){
+				variable.setAdditionalPath(variable.getAdditionalPath().substring(1, variable.getAdditionalPath().length()));
+			}			
 			value = value + File.pathSeparator + "$" + variable.getName() + File.separator + variable.getAdditionalPath(); 			
 		} else {
 			value = value + File.pathSeparator + "$" + variable.getName();			

@@ -78,6 +78,50 @@ public class EnvironmentController {
 		
 		return null;
 	}
+	
+	public String update(Variable variable) throws InterruptedException, IOException, Exception {
+		Variable result = EnvironmentManager.variables.remove(variable.getName().toUpperCase());
+		if(result != null){	
+			result = EnvironmentManager.variables.put(variable.getName(), variable);	
+			if(result == null) {
+				FileManager.writeFile(EnvironmentManager.SYSTEM_START_FILE, EnvironmentManager.montFile(EnvironmentManager.path, EnvironmentManager.variables));
+				EnvironmentManager.generateBashProfile(EnvironmentManager.path, EnvironmentManager.variables);				
+			} else {
+				return "Não foi possível alterar o conteúdo da variável. Verifique se o comando SUDO foi usado corretamente";
+			}			
+		} else {
+			return "Variável não encontrada";
+		}	
+		
+		return null;
+	}
+	
+	public String addToPath(Variable variable) throws InterruptedException, IOException, Exception {
+		Variable result = EnvironmentManager.variables.get(variable.getName());
+		
+		if(result != null) {						
+			EnvironmentManager.putVariableOnPath(EnvironmentManager.path, variable);
+			FileManager.writeFile(EnvironmentManager.SYSTEM_START_FILE, EnvironmentManager.montFile(EnvironmentManager.path, EnvironmentManager.variables));			
+			EnvironmentManager.generateBashProfile(EnvironmentManager.path, EnvironmentManager.variables);	
+		} else {
+			return "Variável não encontrada";
+		}
+				
+		return null;
+	}
+
+	public String removeFromPath(Variable variable) throws InterruptedException, IOException, Exception {
+		variable = EnvironmentManager.variables.get(variable.getName());
+		
+		if(variable != null) {						
+			EnvironmentManager.removeVariableFromPath(EnvironmentManager.path, variable);
+			FileManager.writeFile(EnvironmentManager.SYSTEM_START_FILE, EnvironmentManager.montFile(EnvironmentManager.path, EnvironmentManager.variables));
+		} else {
+			return "Variável não encontrada";
+		}
+				
+		return null;		
+	}
 
 	public String list() throws Exception{
 		return EnvironmentManager.montBashFile(EnvironmentManager.path, EnvironmentManager.variables);	
