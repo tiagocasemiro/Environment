@@ -4,6 +4,7 @@ public class Variable {
 	private String name;
 	private String value;
 	private String additionalPath;
+	private boolean onPath = false;
 	
 	public String getName() {
 		return name;
@@ -22,10 +23,16 @@ public class Variable {
 	}
 	public void setAdditionalPath(String additionalPath) {
 		this.additionalPath = additionalPath;
+	}		
+	public Boolean isOnPath() {
+		return onPath;
+	}
+	public void setOnPath(Boolean isOnPath) {
+		this.onPath = isOnPath;
 	}
 	@Override
 	public String toString() {
-		return "Variable [name=" + name + ", value=" + value + "]";
+		return getName();
 	}
 }
 

@@ -1,26 +1,20 @@
 package br.com.environment.view.graphic;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
-public class Main extends Application{
+public class Main {
     //http://jfoenix.com/  >>> biblioteca visual com material design
 	//https://github.com/toastkidjp/javafx_css_generator >>> gerador de css para esta biblioteca
 	
 	//http://code.makery.ch/library/javafx-8-tutorial/pt/part1/  >>> tutorial javafx
+	//http://tutorials.jenkov.com/javafx/listview.html //tutorial
+	
+	//https://app.moqups.com/tiagopaivacasemiro@gmail.com/cfXHznIdrP/edit/page/ad64222d5  >>> Layout
+	
+	//http://physalix.com/javafx2-drag-and-drop-list-cell-as-tags-to-flowpane/  >>> terminar a tela do Path
+	//http://tutorials.jenkov.com/javafx/flowpane.html   >>> terminar a tela do Path
+	
 	
 	public static void main(String[] args) {
-		launch(args);
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		Pane root = FXMLLoader.load(getClass().getResource("Principal.fxml"));
-		Scene scene = new Scene(root, 700, 500);
-		primaryStage.setScene(scene);
-		primaryStage.show();		
+		ApplicationEnvironment.go(args);
 	}
 }

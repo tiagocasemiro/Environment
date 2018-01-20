@@ -25,17 +25,24 @@ public class EnvironmentController {
 									
 			@Override
 			public void onPathListener(Path path) {
-				EnvironmentManager.path = path;
-				EnvironmentManager.path.generatePath();
+				EnvironmentManager.path = path;				
 			}
 						
 			@Override
 			public void onFinish() {
 				for (Map.Entry<String, Variable> entry : EnvironmentManager.variables.entrySet()) {
 					for(String value: EnvironmentManager.path.getPath()){
-						if(value.contains(entry.getKey())){
-							value = value.replace("$" + entry.getKey() + File.separator, "");
-							entry.getValue().setAdditionalPath(value);
+						if(value.contains("$" + entry.getKey() + File.separator) || value.equals("$" + entry.getKey())){
+							value = value.replace("$" + entry.getKey(), "");
+							
+							if(value.startsWith("/")){
+								value = value.substring(1, value.length());
+							}
+							
+							if(!"".equals(value)){
+								entry.getValue().setAdditionalPath(value);
+							}
+							entry.getValue().setOnPath(true);
 						}
 					}					
 				}				
@@ -56,7 +63,7 @@ public class EnvironmentController {
 	}
 	
 	public String delete(Variable variable) throws Exception {
-		Variable result = EnvironmentManager.variables.remove(variable.getName().toUpperCase());
+		Variable result = EnvironmentManager.variables.remove(variable.getName());
 		if(result != null){			
 			EnvironmentManager.removeVariableFromPath(EnvironmentManager.path, variable);
 			FileManager.writeFile(EnvironmentManager.SYSTEM_START_FILE, EnvironmentManager.montFile(EnvironmentManager.path, EnvironmentManager.variables));					
@@ -80,7 +87,7 @@ public class EnvironmentController {
 	}
 	
 	public String update(Variable variable) throws InterruptedException, IOException, Exception {
-		Variable result = EnvironmentManager.variables.remove(variable.getName().toUpperCase());
+		Variable result = EnvironmentManager.variables.remove(variable.getName());
 		if(result != null){	
 			result = EnvironmentManager.variables.put(variable.getName(), variable);	
 			if(result == null) {
@@ -123,11 +130,27 @@ public class EnvironmentController {
 		return null;		
 	}
 
-	public String list() throws Exception{
+	public String listToString() throws Exception {
 		return EnvironmentManager.montBashFile(EnvironmentManager.path, EnvironmentManager.variables);	
 	}
 	
-	public String version(){
+	public Path getPath() {
+		return EnvironmentManager.path;
+	}
+	
+	public String savePath(Path path) throws IOException, InterruptedException {
+		EnvironmentManager.path = path;		
+		FileManager.writeFile(EnvironmentManager.SYSTEM_START_FILE, EnvironmentManager.montFile(EnvironmentManager.path, EnvironmentManager.variables));
+		EnvironmentManager.generateBashProfile(EnvironmentManager.path, EnvironmentManager.variables);
+		
+		return null;
+	}
+	
+	public Map<String, Variable> list() {
+		return EnvironmentManager.variables;
+	}
+	
+	public String version() {
 		return EnvironmentManager.VERSION;
 	}
 }

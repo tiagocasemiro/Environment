@@ -74,7 +74,7 @@ public class Main {
 			}
 			case LIST: {		
 				try {
-					printOut(controller.list());					
+					printOut(controller.listToString());					
 				} catch(Exception e) {
 					printOut("Ocorreu um erro inesperado. Verifique os arquivos envolvidos na operação");
 				}

@@ -20,7 +20,7 @@ public class EnvironmentManager {
 		Variable variable = new Variable();
 		String[] pieces = line.split("=");
 		if(pieces.length == 2){			
-			variable.setName(pieces[0].toUpperCase());
+			variable.setName(pieces[0]);
 			variable.setValue(pieces[1].replace("\"", ""));				
 		}else{
 			throw new RuntimeException("Erro ao tentar carregar arquivo /etc/Environment");
@@ -39,7 +39,7 @@ public class EnvironmentManager {
 		}
 		
 		for (int index = 0; index < path.getPath().size(); index++) {			
-			if(!path.getPath().get(index).equals(name) && !path.getPath().get(index).equals("") && !path.getPath().get(index).equals(nameWithAdditionalPath)){
+			if(!path.getPath().get(index).equals(name) && !path.getPath().get(index).equals("") && !path.getPath().get(index).equals(nameWithAdditionalPath) &&	!path.getPath().get(index).contains(name + File.separator)){
 				if(index > 0){
 					finalPath.append(":");
 				}

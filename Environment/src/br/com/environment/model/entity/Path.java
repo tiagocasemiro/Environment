@@ -10,7 +10,12 @@ public class Path extends Variable{
 		return path;
 	}
 	
-	public void generatePath(){
+	public void setValue(String value) {
+		super.setValue(value);
+		generatePath();
+	}
+	
+	private void generatePath(){
 		path = Arrays.asList(getValue().split(":"));
 	}
 }
