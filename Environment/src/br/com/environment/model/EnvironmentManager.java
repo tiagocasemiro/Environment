@@ -127,6 +127,9 @@ public class EnvironmentManager {
 		FileManager.writeFile(bash, bashRcWithNewVariables.toString());			 
 		Process process = Runtime.getRuntime().exec("sudo source " + bash);         
 	    process.waitFor();
+	    
+	    process = Runtime.getRuntime().exec("sudo source " + bashSupport);         
+	    process.waitFor();
 	       
 	    FileManager.writeFile(bash, bashRcBody);
 	    FileManager.writeFile(bashSupport, bashFile);
