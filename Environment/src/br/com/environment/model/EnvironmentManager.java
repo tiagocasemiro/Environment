@@ -113,7 +113,12 @@ public class EnvironmentManager {
 	}
 
 	public static void generateBashProfile(Path path, Map<String, Variable> variables) throws IOException, InterruptedException {
-		String bash = "/etc/bash.bashrc";
+		
+		String home = "/home/" + System.getProperty("USER") + "/";			
+		
+		System.out.println("Home : " + home);
+		
+		String bash = home + "/.bashrc";
 		String bashSupport = "/etc/.environment";
 		
 		String bashRcBody = FileManager.readFile(bash);
@@ -122,16 +127,16 @@ public class EnvironmentManager {
 		StringBuilder bashRcWithNewVariables = new StringBuilder();
 		bashRcWithNewVariables.append(bashRcBody);
 		bashRcWithNewVariables.append(System.lineSeparator());
+		bashRcWithNewVariables.append(System.lineSeparator());
+		bashRcWithNewVariables.append("### DarkSide - system of mananger environment variable ###");
+		bashRcWithNewVariables.append(System.lineSeparator());
 		bashRcWithNewVariables.append(bashFile);	
 						
 		FileManager.writeFile(bash, bashRcWithNewVariables.toString());			 
 		Process process = Runtime.getRuntime().exec("sudo source " + bash);         
 	    process.waitFor();
-	    
-	    process = Runtime.getRuntime().exec("sudo source " + bashSupport);         
-	    process.waitFor();
-	       
-	    FileManager.writeFile(bash, bashRcBody);
+	    	   	       
+	    //FileManager.writeFile(bash, bashRcBody);
 	    FileManager.writeFile(bashSupport, bashFile);
 	}
 
