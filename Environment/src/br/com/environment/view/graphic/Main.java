@@ -10,6 +10,8 @@ public class Main {
 	
 	//https://app.moqups.com/tiagopaivacasemiro@gmail.com/cfXHznIdrP/edit/page/ad64222d5  >>> Layout
 	
+	//https://github.com/libgdx/packr >>> empacota jre junto com a aplicacao
+	
 	//http://physalix.com/javafx2-drag-and-drop-list-cell-as-tags-to-flowpane/  >>> terminar a tela do Path
 	//http://tutorials.jenkov.com/javafx/flowpane.html   >>> terminar a tela do Path
 	
