@@ -51,6 +51,9 @@ public class FileManager {
 		    while(line != null) {
 		    	Variable variable = EnvironmentManager.variableFromLine(line);
 		    	
+		    	if(variable == null) 
+		    		continue;
+		    	
 		    	if(variable.getName().equals(EnvironmentManager.PATH)) {	
 		    		Path path = new Path();
 		    		path.setName(variable.getName());

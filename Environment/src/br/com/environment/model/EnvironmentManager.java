@@ -10,7 +10,7 @@ import br.com.environment.model.entity.Variable;
 
 public class EnvironmentManager {
 	public static String PATH = "PATH";
-	public static String SYSTEM_START_FILE = "/etc/environment";  
+	public static String SYSTEM_START_FILE = "/Users/tiago.casemiro/.bash_profile";  
 	public static Map<String, Variable> variables = new HashMap<String, Variable>();
 	public static Path path = new Path();
 	public static final String VERSION = "Environment app, Version v0.2.0";
@@ -23,7 +23,8 @@ public class EnvironmentManager {
 			variable.setName(pieces[0]);
 			variable.setValue(pieces[1].replace("\"", ""));				
 		}else{
-			throw new RuntimeException("Erro ao tentar carregar arquivo /etc/Environment");
+			//throw new RuntimeException("Erro ao tentar carregar arquivo /etc/Environment");
+			return null;
 		}
 		
 		return variable;
