@@ -26,7 +26,7 @@ public class ApplicationEnvironment extends Application{
 			openScreen(Screen.MAIN);
 		} catch(Exception e){
 			e.printStackTrace();
-		}				
+		}
 	}
 	
 	public static void openScreen(Screen screen) {

@@ -51,17 +51,16 @@ public class FileManager {
 		    while(line != null) {
 		    	Variable variable = EnvironmentManager.variableFromLine(line);
 		    	
-		    	if(variable == null) 
-		    		continue;
-		    	
-		    	if(variable.getName().equals(EnvironmentManager.PATH)) {	
-		    		Path path = new Path();
-		    		path.setName(variable.getName());
-		    		path.setValue(variable.getValue());
-		    		path.setAdditionalPath(variable.getAdditionalPath());		    		
-		    		lineListener.onPathListener(path);	
-		    	} else {
-		    		lineListener.onLineListener(variable);	
+		    	if(variable != null) {	
+			    	if(variable.getName().equals(EnvironmentManager.PATH)) {	
+			    		Path path = new Path();
+			    		path.setName(variable.getName());
+			    		path.setValue(variable.getValue());
+			    		path.setAdditionalPath(variable.getAdditionalPath());		    		
+			    		lineListener.onPathListener(path);	
+			    	} else {
+			    		lineListener.onLineListener(variable);	
+			    	}
 		    	}
 		        		        
 		        line = br.readLine();

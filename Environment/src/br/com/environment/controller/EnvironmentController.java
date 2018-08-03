@@ -31,20 +31,22 @@ public class EnvironmentController {
 			@Override
 			public void onFinish() {
 				for (Map.Entry<String, Variable> entry : EnvironmentManager.variables.entrySet()) {
-					for(String value: EnvironmentManager.path.getPath()){
-						if(value.contains("$" + entry.getKey() + File.separator) || value.equals("$" + entry.getKey())){
-							value = value.replace("$" + entry.getKey(), "");
-							
-							if(value.startsWith("/")){
-								value = value.substring(1, value.length());
-							}
-							
-							if(!"".equals(value)){
-								entry.getValue().setAdditionalPath(value);
-							}
-							entry.getValue().setOnPath(true);
+					if(EnvironmentManager.path != null && EnvironmentManager.path.getPath() != null) {
+						for(String value: EnvironmentManager.path.getPath()){
+							if(value.contains("$" + entry.getKey() + File.separator) || value.equals("$" + entry.getKey())){
+								value = value.replace("$" + entry.getKey(), "");
+								
+								if(value.startsWith("/")){
+									value = value.substring(1, value.length());
+								}
+								
+								if(!"".equals(value)){
+									entry.getValue().setAdditionalPath(value);
+								}
+								entry.getValue().setOnPath(true);
+							}							
 						}
-					}					
+					}
 				}				
 			}
 		});			

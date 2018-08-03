@@ -17,10 +17,11 @@ public class EnvironmentManager {
 	
 	
 	public static Variable variableFromLine(String line) {
+		//export ORG_GRADLE_PROJECT_artifactoryUser=tiago.casemiro				
 		Variable variable = new Variable();
 		String[] pieces = line.split("=");
 		if(pieces.length == 2){			
-			variable.setName(pieces[0]);
+			variable.setName(pieces[0].replace("export", "").replace(" ", ""));
 			variable.setValue(pieces[1].replace("\"", ""));				
 		}else{
 			//throw new RuntimeException("Erro ao tentar carregar arquivo /etc/Environment");
