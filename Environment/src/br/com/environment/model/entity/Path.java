@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Path extends Variable{
+	public static String PATH_NAME = "PATH";
+	
 	private List<String> path;
 
 	public List<String> getPath() {
@@ -17,5 +19,5 @@ public class Path extends Variable{
 	
 	private void generatePath(){
 		path = Arrays.asList(getValue().split(":"));
-	}
+	}	
 }

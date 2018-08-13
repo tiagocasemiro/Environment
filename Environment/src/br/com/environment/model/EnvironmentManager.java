@@ -9,123 +9,12 @@ import br.com.environment.model.entity.Line;
 import br.com.environment.model.entity.Path;
 import br.com.environment.model.entity.Variable;
 
-public class EnvironmentManager {
-	public static String PATH = "PATH";
-	public static String BASH_PROFILE ="/Users/" + System.getProperty("user.name") + "/.bash_profile"; 
-		
-	public static Map<String, Variable> variables = new HashMap<String, Variable>();
-	public static Path path = new Path();
-	public static final String VERSION = "Environment app, Version v0.2.0";
+public class EnvironmentManager {	
+	private static String BASH_PROFILE ="/Users/" + System.getProperty("user.name") + "/.bash_profile"; 		
+	private static Map<String, Variable> variables = new HashMap<String, Variable>();
+	private static Path path = new Path();
+	private static final String VERSION = "Environment app, Version v0.2.0";
 	
-	public static void removeVariableFromPath(Path path, Variable variable) {
-		StringBuffer finalPath = new StringBuffer();		
-		String name = "$" + variable.getName();		
-		String nameWithAdditionalPath = "";
-				
-		if(variable.getAdditionalPath() != null){
-			nameWithAdditionalPath = "$" + variable.getName() + File.separator + variable.getAdditionalPath();
-		}
-		
-		for (int index = 0; index < path.getPath().size(); index++) {			
-			if(!path.getPath().get(index).equals(name) && !path.getPath().get(index).equals("") && !path.getPath().get(index).equals(nameWithAdditionalPath) &&	!path.getPath().get(index).contains(name + File.separator)){
-				if(index > 0){
-					finalPath.append(":");
-				}
-				
-				finalPath.append(path.getPath().get(index));				
-			}	
-		}
-		
-		path.setValue(finalPath.toString());		
-	}
-
-	public static void putVariableOnPath(Variable path, Variable variable) {
-		String value = path.getValue();
-						
-		if(variable.getAdditionalPath() != null) {
-			char[] additionalPath = variable.getAdditionalPath().toCharArray();
-			String characterVaidation = String.valueOf(additionalPath[0]);
-			
-			if(additionalPath.length > 0 && characterVaidation.equals(File.separator)){
-				variable.setAdditionalPath(variable.getAdditionalPath().substring(1, variable.getAdditionalPath().length()));
-			}			
-			value = value + File.pathSeparator + "$" + variable.getName() + File.separator + variable.getAdditionalPath(); 			
-		} else {
-			value = value + File.pathSeparator + "$" + variable.getName();			
-		}
-		
-		path.setValue(value);
-	}
-
-	public static String montFile(Variable path, Map<String, Variable> variables) {
-		StringBuffer environment = new StringBuffer();
-		
-		environment.append("export ");
-		environment.append(path.getName());
-	    environment.append("=");
-	    environment.append("\"");
-	    environment.append(path.getValue());
-	    environment.append("\"");	   
-						
-		for(Map.Entry<String, Variable> entry : variables.entrySet()) {	
-			environment.append(System.lineSeparator());
-			environment.append("export ");
-		    environment.append(entry.getKey());
-		    environment.append("=");
-		    environment.append("\"");
-		    environment.append(entry.getValue().getValue());
-		    environment.append("\"");		    
-		}
-		
-		return environment.toString();
-	}
-
-	public static String montBashProfile(Variable path, Map<String, Variable> variables) {
-		StringBuffer environment = new StringBuffer();
-										
-		for(Map.Entry<String, Variable> entry : variables.entrySet()) {		
-			environment.append("export ");
-		    environment.append(entry.getKey());
-		    environment.append("=");
-		    environment.append("\"");
-		    environment.append(entry.getValue().getValue());
-		    environment.append("\"");
-		    environment.append(System.lineSeparator());
-		}
-		
-		environment.append(System.lineSeparator());
-		environment.append("export ");
-		environment.append(path.getName());
-	    environment.append("=");
-	    environment.append("\"");
-	    environment.append(path.getValue());
-	    environment.append("\"");
-	    environment.append(System.lineSeparator());
-		
-		return environment.toString();
-	}
-
-	public static void generateBashProfile() throws IOException, InterruptedException {	
-		String bashRcBody = FileManager.readFile(BASH_PROFILE);
-		String bashFile = montBashProfile(EnvironmentManager.path, EnvironmentManager.variables);
-		
-		StringBuilder bashRcWithNewVariables = new StringBuilder();
-		bashRcWithNewVariables.append(bashRcBody);
-		bashRcWithNewVariables.append(System.lineSeparator());
-		bashRcWithNewVariables.append(System.lineSeparator());
-		bashRcWithNewVariables.append("### DarkSide - system of mananger environment variable ###");
-		bashRcWithNewVariables.append(System.lineSeparator());
-		bashRcWithNewVariables.append(bashFile);	
-								
-		System.out.println("source " + BASH_PROFILE);
-		
-		FileManager.writeFile(BASH_PROFILE, bashRcWithNewVariables.toString());			 
-		Process process = Runtime.getRuntime().exec("source " + BASH_PROFILE);         
-	    process.waitFor();
-	    	   	       
-	    FileManager.writeFile(BASH_PROFILE, bashRcBody);	   
-	}
-
 	public static void init() {
 		FileManager.readFileLineByLine(BASH_PROFILE, new LineListener() {		
 			@Override
@@ -165,4 +54,119 @@ public class EnvironmentManager {
 			}
 		});		
 	}	
+	
+	public static void removeVariableFromPath(Variable variable) {
+		StringBuffer finalPath = new StringBuffer();		
+		String name = "$" + variable.getName();		
+		String nameWithAdditionalPath = "";
+				
+		if(variable.getAdditionalPath() != null){
+			nameWithAdditionalPath = "$" + variable.getName() + File.separator + variable.getAdditionalPath();
+		}
+		
+		for (int index = 0; index < path.getPath().size(); index++) {			
+			if(!path.getPath().get(index).equals(name) && !path.getPath().get(index).equals("") && !path.getPath().get(index).equals(nameWithAdditionalPath) &&	!path.getPath().get(index).contains(name + File.separator)){
+				if(index > 0){
+					finalPath.append(":");
+				}
+				
+				finalPath.append(path.getPath().get(index));				
+			}	
+		}
+		
+		path.setValue(finalPath.toString());
+	}
+
+	public static void putVariableOnPath(Variable variable) {
+		String value = path.getValue();
+						
+		if(variable.getAdditionalPath() != null) {
+			char[] additionalPath = variable.getAdditionalPath().toCharArray();
+			String characterVaidation = String.valueOf(additionalPath[0]);
+			
+			if(additionalPath.length > 0 && characterVaidation.equals(File.separator)){
+				variable.setAdditionalPath(variable.getAdditionalPath().substring(1, variable.getAdditionalPath().length()));
+			}			
+			value = value + File.pathSeparator + "$" + variable.getName() + File.separator + variable.getAdditionalPath(); 			
+		} else {
+			value = value + File.pathSeparator + "$" + variable.getName();			
+		}
+		
+		path.setValue(value);	
+	}
+	
+	public static void generateBashProfile() throws IOException, InterruptedException {	
+		String bashRcBody = FileManager.readFile(BASH_PROFILE);
+		String bashFile = montBashProfile(EnvironmentManager.path, EnvironmentManager.variables);
+		
+		StringBuilder bashRcWithNewVariables = new StringBuilder();
+		bashRcWithNewVariables.append(bashRcBody);
+		bashRcWithNewVariables.append(System.lineSeparator());
+		bashRcWithNewVariables.append(System.lineSeparator());
+		bashRcWithNewVariables.append("### DarkSide - system of mananger environment variable ###");
+		bashRcWithNewVariables.append(System.lineSeparator());
+		bashRcWithNewVariables.append(bashFile);	
+								
+		System.out.println("source " + BASH_PROFILE);
+		
+		FileManager.writeFile(BASH_PROFILE, bashRcWithNewVariables.toString());
+	}
+	
+	public static void sourceBashProfile() throws IOException, InterruptedException {
+		Process process = Runtime.getRuntime().exec("source " + BASH_PROFILE);         
+	    process.waitFor();
+	}
+
+	public static boolean createVariable(Variable variable) {
+		return EnvironmentManager.variables.put(variable.getName(), variable) == null;	
+	} 
+	
+	public static boolean removeVariable(Variable variable) {
+		return EnvironmentManager.variables.remove(variable.getName()) != null;			
+	} 
+	
+	public static boolean existVariableByName(String name) {
+		return EnvironmentManager.variables.get(name) != null;
+	}
+	
+	public static Path getPath() {
+		return path;
+	}
+	
+	public static void savePath(Path path) {
+		EnvironmentManager.path = path;
+	}
+	
+	public static Map<String, Variable> listAllVariables() {
+		return EnvironmentManager.variables;
+	}
+	
+	public static String version() {
+		return EnvironmentManager.VERSION;
+	}
+	
+	private static String montBashProfile(Variable path, Map<String, Variable> variables) {
+		StringBuffer environment = new StringBuffer();
+										
+		for(Map.Entry<String, Variable> entry : variables.entrySet()) {		
+			environment.append("export ");
+		    environment.append(entry.getKey());
+		    environment.append("=");
+		    environment.append("\"");
+		    environment.append(entry.getValue().getValue());
+		    environment.append("\"");
+		    environment.append(System.lineSeparator());
+		}
+		
+		environment.append(System.lineSeparator());
+		environment.append("export ");
+		environment.append(path.getName());
+	    environment.append("=");
+	    environment.append("\"");
+	    environment.append(path.getValue());
+	    environment.append("\"");
+	    environment.append(System.lineSeparator());
+		
+		return environment.toString();
+	}
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import br.com.environment.model.EnvironmentManager;
-import br.com.environment.model.FileManager;
 import br.com.environment.model.entity.Path;
 import br.com.environment.model.entity.Variable;
 
@@ -14,107 +13,71 @@ public class EnvironmentControllerGraphic {
 		EnvironmentManager.init();		
 	}
 		
-	public String create(Variable variable) throws IOException, InterruptedException, Exception {
-		Variable result = EnvironmentManager.variables.put(variable.getName(), variable);				
-		if(result == null) {							
-			FileManager.writeFile(EnvironmentManager.BASH_PROFILE, EnvironmentManager.montFile(EnvironmentManager.path, EnvironmentManager.variables));			
+	public void create(Variable variable) throws IOException, InterruptedException, Exception {
+		if(EnvironmentManager.createVariable(variable)) {							
 			EnvironmentManager.generateBashProfile();
-		} else {
-			return "Variável já existente";
-		}
-		
-		return null;
+			EnvironmentManager.sourceBashProfile();
+		} 
 	}
 	
-	public String delete(Variable variable) throws Exception {
-		Variable result = EnvironmentManager.variables.remove(variable.getName());
-		if(result != null){			
-			EnvironmentManager.removeVariableFromPath(EnvironmentManager.path, variable);
-			FileManager.writeFile(EnvironmentManager.BASH_PROFILE, EnvironmentManager.montFile(EnvironmentManager.path, EnvironmentManager.variables));					
-		} else {
-			return "Variável não encontrada";
-		}
-		return null;
+	public void delete(Variable variable) throws Exception {
+		if(EnvironmentManager.removeVariable(variable)){			
+			EnvironmentManager.removeVariableFromPath(variable);
+			EnvironmentManager.generateBashProfile();
+			EnvironmentManager.sourceBashProfile();
+		} 
 	}
 	
-	public String createOnPath(Variable variable) throws InterruptedException, IOException, Exception {
-		Variable result = EnvironmentManager.variables.put(variable.getName(), variable);
-		if(result == null) {		
-			EnvironmentManager.putVariableOnPath(EnvironmentManager.path, variable);
-			FileManager.writeFile(EnvironmentManager.BASH_PROFILE, EnvironmentManager.montFile(EnvironmentManager.path, EnvironmentManager.variables));			
+	public void createOnPath(Variable variable) throws InterruptedException, IOException, Exception {
+		if(EnvironmentManager.createVariable(variable)) {			
+			EnvironmentManager.putVariableOnPath(variable);			
 			EnvironmentManager.generateBashProfile();	
-		} else {
-			return "Variável já existente";
-		}	
-		
-		return null;
-	}
-	
-	public String update(Variable variable) throws InterruptedException, IOException, Exception {
-		Variable result = EnvironmentManager.variables.remove(variable.getName());
-		if(result != null){	
-			result = EnvironmentManager.variables.put(variable.getName(), variable);	
-			if(result == null) {
-				FileManager.writeFile(EnvironmentManager.BASH_PROFILE, EnvironmentManager.montFile(EnvironmentManager.path, EnvironmentManager.variables));
-				EnvironmentManager.generateBashProfile();				
-			} else {
-				return "Não foi possível alterar o conteúdo da variável. Verifique se o comando SUDO foi usado corretamente";
-			}			
-		} else {
-			return "Variável não encontrada";
-		}	
-		
-		return null;
-	}
-	
-	public String addToPath(Variable variable) throws InterruptedException, IOException, Exception {
-		Variable result = EnvironmentManager.variables.get(variable.getName());
-		
-		if(result != null) {						
-			EnvironmentManager.putVariableOnPath(EnvironmentManager.path, variable);
-			FileManager.writeFile(EnvironmentManager.BASH_PROFILE, EnvironmentManager.montFile(EnvironmentManager.path, EnvironmentManager.variables));			
-			EnvironmentManager.generateBashProfile();	
-		} else {
-			return "Variável não encontrada";
+			EnvironmentManager.sourceBashProfile();
 		}
-				
-		return null;
+	}
+	
+	public void update(Variable variable) throws InterruptedException, IOException, Exception {
+		if(EnvironmentManager.removeVariable(variable)){			
+			if(EnvironmentManager.createVariable(variable)) {				
+				EnvironmentManager.generateBashProfile();	
+				EnvironmentManager.sourceBashProfile();
+			} 		
+		} 
+	}
+	
+	public void addToPath(Variable variable) throws InterruptedException, IOException, Exception {
+		if(EnvironmentManager.existVariableByName(variable.getName())) {
+			EnvironmentManager.putVariableOnPath(variable);
+			EnvironmentManager.generateBashProfile();
+			EnvironmentManager.sourceBashProfile();
+		}
 	}
 
-	public String removeFromPath(Variable variable) throws InterruptedException, IOException, Exception {
-		variable = EnvironmentManager.variables.get(variable.getName());
-		
-		if(variable != null) {						
-			EnvironmentManager.removeVariableFromPath(EnvironmentManager.path, variable);
-			FileManager.writeFile(EnvironmentManager.BASH_PROFILE, EnvironmentManager.montFile(EnvironmentManager.path, EnvironmentManager.variables));
-		} else {
-			return "Variável não encontrada";
-		}
-				
-		return null;		
-	}
-
-	public String listToString() throws Exception {
-		return EnvironmentManager.montBashProfile(EnvironmentManager.path, EnvironmentManager.variables);	
+	public void removeFromPath(Variable variable) throws InterruptedException, IOException, Exception {
+		if(EnvironmentManager.existVariableByName(variable.getName())) {						
+			EnvironmentManager.removeVariableFromPath(variable);
+			EnvironmentManager.generateBashProfile();	
+			EnvironmentManager.sourceBashProfile();
+		} 	
 	}
 	
 	public Path getPath() {
-		return EnvironmentManager.path;
+		return EnvironmentManager.getPath();
 	}
 	
 	public String savePath(Path path) throws IOException, InterruptedException {
-		EnvironmentManager.path = path;		
-		FileManager.writeFile(EnvironmentManager.BASH_PROFILE, EnvironmentManager.montFile(EnvironmentManager.path, EnvironmentManager.variables));
+		EnvironmentManager.savePath(path);	
 		EnvironmentManager.generateBashProfile();
+		EnvironmentManager.sourceBashProfile();
 		
 		return null;
 	}
 	
 	public Map<String, Variable> list() {
-		return EnvironmentManager.variables;
+		return EnvironmentManager.listAllVariables();
 	}
 	
 	public String version() {
-		return EnvironmentManager.VERSION;
+		return EnvironmentManager.version();
 	}
 }

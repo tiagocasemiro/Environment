@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileManager {
-	public static void writeFile(String fullFileName, String content) {
+	protected static void writeFile(String fullFileName, String content) {
 		BufferedWriter bw = null;
 		FileWriter fw = null;
 		try {			
@@ -35,7 +35,7 @@ public class FileManager {
 		}
 	}
 
-	public static void readFileLineByLine(String fullFileName, LineListener lineListener) {
+	protected static void readFileLineByLine(String fullFileName, LineListener lineListener) {
 		BufferedReader br = null;
 		try {	
 			File file = new File(fullFileName);
@@ -62,7 +62,7 @@ public class FileManager {
 	}
 
 	@SuppressWarnings("finally")
-	public static String readFile(String fullFileName) {
+	protected static String readFile(String fullFileName) {
 		StringBuffer bodyOfFile = new StringBuffer();
 		BufferedReader br = null;		
 		try {	

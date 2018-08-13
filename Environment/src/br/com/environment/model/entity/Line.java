@@ -1,7 +1,5 @@
 package br.com.environment.model.entity;
 
-import br.com.environment.model.EnvironmentManager;
-
 public class Line {
 	private final String content;
 	private Path path;
@@ -16,7 +14,7 @@ public class Line {
 		if(pieces.length == 2){
 			variable.setName(pieces[0].replace("export", "").replaceAll(" ", ""));
 			variable.setValue(pieces[1].replace("\"", ""));		
-			if(variable.getName().equals(EnvironmentManager.PATH)) {
+			if(variable.getName().equals(Path.PATH_NAME)) {
 				Path path = new Path();
 	    		path.setName(variable.getName());
 	    		path.setValue(variable.getValue());
