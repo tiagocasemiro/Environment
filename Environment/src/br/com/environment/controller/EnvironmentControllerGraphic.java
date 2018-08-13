@@ -8,16 +8,12 @@ import br.com.environment.model.FileManager;
 import br.com.environment.model.entity.Path;
 import br.com.environment.model.entity.Variable;
 
-public class EnvironmentController {
+public class EnvironmentControllerGraphic {
 	
-	public EnvironmentController() {
-		init();
+	public EnvironmentControllerGraphic() {
+		EnvironmentManager.init();		
 	}
-	
-	private void init() {
-		EnvironmentManager.init();				
-	}
-
+		
 	public String create(Variable variable) throws IOException, InterruptedException, Exception {
 		Variable result = EnvironmentManager.variables.put(variable.getName(), variable);				
 		if(result == null) {							

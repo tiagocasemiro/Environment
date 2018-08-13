@@ -14,7 +14,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import br.com.environment.controller.EnvironmentController;
+import br.com.environment.controller.EnvironmentControllerGraphic;
 import br.com.environment.model.entity.Variable;
 import br.com.environment.view.graphic.AlertUtil;
 import br.com.environment.view.graphic.ApplicationEnvironment;
@@ -40,7 +40,7 @@ public class CreateScreen implements Initializable{
     @FXML
     private Button saveButton;
     
-    private EnvironmentController controller = new EnvironmentController();  
+    private EnvironmentControllerGraphic controller = new EnvironmentControllerGraphic();  
     private Variable variable = null;
     private String validateMessage = "";
     

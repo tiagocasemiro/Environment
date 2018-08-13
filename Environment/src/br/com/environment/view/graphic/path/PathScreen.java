@@ -7,7 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
-import br.com.environment.controller.EnvironmentController;
+import br.com.environment.controller.EnvironmentControllerGraphic;
 import br.com.environment.model.entity.Path;
 import br.com.environment.view.graphic.AlertUtil;
 import br.com.environment.view.graphic.ApplicationEnvironment;
@@ -17,7 +17,7 @@ public class PathScreen implements Initializable {
 	@FXML
     private TextArea value;
 	
-    private EnvironmentController controller = new EnvironmentController();
+    private EnvironmentControllerGraphic controller = new EnvironmentControllerGraphic();
     private Path path;
     private String validateMessage;
 	

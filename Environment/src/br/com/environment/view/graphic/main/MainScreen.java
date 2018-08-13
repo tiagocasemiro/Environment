@@ -17,7 +17,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Line;
-import br.com.environment.controller.EnvironmentController;
+import br.com.environment.controller.EnvironmentControllerGraphic;
 import br.com.environment.model.entity.Variable;
 import br.com.environment.view.graphic.AlertUtil;
 import br.com.environment.view.graphic.ApplicationEnvironment;
@@ -47,7 +47,7 @@ public class MainScreen implements Initializable {
     @FXML
     private Button saveButton;
     
-    private EnvironmentController controller = new EnvironmentController();
+    private EnvironmentControllerGraphic controller = new EnvironmentControllerGraphic();
     private Map<String, Variable> variables;     
     private Variable variableOpened = null;
     private String validateMessage = "";
