@@ -34,6 +34,33 @@ public class FileManager {
 			}
 		}
 	}
+	
+	protected static void writeFileWithoutDelete(String fullFileName, String content) {
+		BufferedWriter bw = null;
+		FileWriter fw = null;
+		try {			
+			File file = new File(fullFileName);
+			if(file.exists()){
+				return;		
+			}
+			file.createNewFile();
+			
+			fw = new FileWriter(fullFileName);			
+			bw = new BufferedWriter(fw);
+			bw.write(content);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (bw != null)
+					bw.close();
+				if (fw != null)
+					fw.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
 
 	protected static void readFileLineByLine(String fullFileName, LineListener lineListener) {
 		BufferedReader br = null;

@@ -12,9 +12,7 @@ public class AlertUtil {
 	private String title = "";
 	private  String content = "";
 	private static Class<?> clazz;
-	
-	
-	
+		
 	public AlertUtil() {
 		clazz = getClass();
 	}
@@ -47,7 +45,5 @@ public class AlertUtil {
 		dialogPane.setPrefSize(400, 200);
 		
 		dialog.showAndWait();		
-	}
-	
-	
+	}		
 }

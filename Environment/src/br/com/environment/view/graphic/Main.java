@@ -16,6 +16,10 @@ public class Main {
 	//http://physalix.com/javafx2-drag-and-drop-list-cell-as-tags-to-flowpane/  >>> terminar a tela do Path
 	//http://tutorials.jenkov.com/javafx/flowpane.html   >>> terminar a tela do Path
 	
+	//Design
+	//https://dribbble.com/shots/2876545-Bolt-Inbox/attachments/593993
+	//https://medium.muz.li/30-handpicked-excellent-dashboards-347e2407a057
+	//https://dribbble.com/shots/2406058-BankApp-Full-View
 	
 	public static void main(String[] args) {
 		ApplicationEnvironment.go(args);

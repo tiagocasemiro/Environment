@@ -1,9 +1,11 @@
 package br.com.environment.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import br.com.environment.model.EnvironmentManager;
+import br.com.environment.model.entity.Line;
 import br.com.environment.model.entity.Path;
 import br.com.environment.model.entity.Variable;
 
@@ -74,7 +76,15 @@ public class EnvironmentControllerGraphic {
 	}
 	
 	public Map<String, Variable> list() {
-		return EnvironmentManager.listAllVariables();
+		Map<String, Variable> variables = new HashMap<>();
+		Map<String, Line> lines = EnvironmentManager.listAllVariables();
+		for(Map.Entry<String, Line> entry : lines.entrySet()) {	
+			if(entry.getValue().getVariable() != null) {
+				variables.put(entry.getKey(), entry.getValue().getVariable());
+			}
+		}
+		
+		return variables;
 	}
 	
 	public String version() {
