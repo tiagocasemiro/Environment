@@ -14,7 +14,7 @@ class VariableUi(name: String? = null, value: Variable? = null) {
     var name by nameProperty
 }
 
-class Derkside : View("Derkside") {
+class Main : View("Derkside") {
     val controller = EnvironmentControllerGraphic()
 
     override val root = BorderPane()
@@ -126,10 +126,7 @@ class Derkside : View("Derkside") {
     }
 }
 
-
-
-class MyApp: App(Derkside::class)
-
+class MyApp: App(Main::class)
 
 fun main(args: Array<String>) {
     launch<MyApp>(args)
