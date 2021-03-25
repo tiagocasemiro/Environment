@@ -7,13 +7,12 @@ import javafx.geometry.Orientation
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.layout.BorderPane
-import javafx.stage.FileChooser
 import tornadofx.*
 
-class MainView : View("Derkside") {
+class MainScreen : View("Derkside") {
+    override val root = BorderPane()
     private val controller = EnvironmentControllerGraphic()
 
-    override val root = BorderPane()
     var nameField : TextField by singleAssign()
     var titleField : TextField by singleAssign()
     var personTable : TableView<VariableUi> by singleAssign()
@@ -39,27 +38,20 @@ class MainView : View("Derkside") {
             top {
                 menubar {
                     menu("File") {
-                        item("new").action {
-                            println("config")
+                        item("Create").action {
+                            replaceWith<CreateScreen>()
                         }
-                        item("edit").action {
-                            println("config")
+                        item("Open path").action {
+                            replaceWith<PathScreen>()
                         }
-                    }
-                    menu("Edit") {
-                        item("select directory").action {
-                            val dir = chooseDirectory("Select Target Directory")
-                            println(dir?.absoluteFile)
+                        item("Select file").action {
+
                         }
                     }
-                    menu("Build") {
-                        item("go").action {
-                            val file = chooseFile(title = "Select file", filters = arrayOf(FileChooser.ExtensionFilter("Images", listOf("*.svg", "*.png"))))
-                            file.forEach {
-                                println(it.absoluteFile)
-                            }
-                        }
+                    menu("About").action {
+
                     }
+
                 }
             }
 
