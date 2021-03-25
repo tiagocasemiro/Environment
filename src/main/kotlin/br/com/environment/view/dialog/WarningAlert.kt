@@ -1,6 +1,6 @@
 package br.com.environment.view.dialog
 
-import br.com.environment.defautPadding
+import br.com.environment.defaultPadding
 import tornadofx.*
 
 class WarningAlert (message: String, onYes: () -> Unit, onCancel: () -> Unit = {}, width: Double = 400.0, height: Double = 200.0): Fragment("Warning") {
@@ -8,14 +8,14 @@ class WarningAlert (message: String, onYes: () -> Unit, onCancel: () -> Unit = {
         setPrefSize(width, height)
         spacer()
         label(message) {
-            paddingAll = defautPadding
+            paddingAll = defaultPadding
         }
         spacer()
         hbox {
-            paddingAll = defautPadding
+            paddingAll = defaultPadding
             spacer()
             button("Cancel"){
-                spacing = defautPadding
+                spacing = defaultPadding
             }.action {
                 onCancel()
                 close()
