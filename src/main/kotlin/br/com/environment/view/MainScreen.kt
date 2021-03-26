@@ -2,23 +2,23 @@ package br.com.environment.view
 
 import br.com.environment.controller.EnvironmentControllerGraphic
 import br.com.environment.model.entity.Variable
+import br.com.environment.view.dialog.AboutAlert
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Orientation
 import javafx.scene.control.Label
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
+import javafx.scene.layout.Background
 import javafx.scene.layout.BorderPane
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
+import javafx.stage.StageStyle
 import tornadofx.*
 
 class MainScreen : View("Derkside") {
     override val root = BorderPane()
     private val controller = EnvironmentControllerGraphic()
 
-/*    var nameField : TextField by singleAssign()
-    var labelField : Label by singleAssign()
-    var titleField : TextField by singleAssign()*/
     var personTable : TableView<VariableUi> by singleAssign()
     class SelectedVariable(val variable: Variable?) : FXEvent()
 
@@ -29,7 +29,6 @@ class MainScreen : View("Derkside") {
             VariableUi(it.key, it.value)
         }.toList()
     }
-
 
     var prevSelection: VariableUi? = null
 
@@ -52,10 +51,15 @@ class MainScreen : View("Derkside") {
 
                         }
                     }
-                    menu("About").action {
 
+                    menu("About"){
+                        item("")
+                        showingProperty().addListener( ChangeListener { _, _, newValue ->
+                            if (newValue) {
+                                AboutAlert().openModal(stageStyle = StageStyle.DECORATED)
+                            }
+                        })
                     }
-
                 }
             }
 
