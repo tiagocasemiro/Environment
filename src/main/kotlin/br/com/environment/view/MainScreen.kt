@@ -4,25 +4,29 @@ import br.com.environment.controller.EnvironmentControllerGraphic
 import br.com.environment.model.entity.Variable
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Orientation
+import javafx.scene.control.Label
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.layout.BorderPane
+import javafx.scene.paint.Color
+import javafx.scene.text.Font
 import tornadofx.*
 
 class MainScreen : View("Derkside") {
     override val root = BorderPane()
     private val controller = EnvironmentControllerGraphic()
 
-    var nameField : TextField by singleAssign()
-    var titleField : TextField by singleAssign()
+/*    var nameField : TextField by singleAssign()
+    var labelField : Label by singleAssign()
+    var titleField : TextField by singleAssign()*/
     var personTable : TableView<VariableUi> by singleAssign()
+    class SelectedVariable(val variable: Variable?) : FXEvent()
 
+    private var persons = retrieveVariables().observable()
 
-    val persons = toList().observable()
-
-    fun toList(): List<VariableUi> {
+    private fun retrieveVariables(): List<VariableUi> {
         return controller.list().map {
-            VariableUi(it.key)
+            VariableUi(it.key, it.value)
         }.toList()
     }
 
@@ -61,29 +65,44 @@ class MainScreen : View("Derkside") {
                         personTable = this
                         column("Variable", VariableUi::nameProperty)
                         selectionModel.selectedItemProperty().onChange {
-                            editPerson(it)
                             prevSelection = it
+                            selectedItem?.value?.let { variable ->
+                                fire(SelectedVariable(variable))
+                            }
                         }
                         contextmenu {
                             item("Delete").action {
-                                println(selectedItem?.name)
+                                selectedItem?.let {
+                                    controller.delete(it.value)
+                                    persons.setAll(retrieveVariables().observable())
+                                }
                             }
                         }
                     },
                     form {
-                        fieldset("Edit person") {
-                            field("Name") {
-                                textfield() {
-                                    nameField = this
+
+
+                        subscribe<SelectedVariable> { event->
+                            clear()
+                            event.variable?.let {
+                                fieldset("Edit variable") {
+                                    label(it.name.toUpperCase()) {
+                                        font = Font.font(20.0)
+                                    }
+                                    field("Name") {
+                                        textfield() {
+                                           // nameField = this
+                                        }
+                                    }
+                                    field("Title") {
+                                        textfield() {
+                                           // titleField = this
+                                        }
+                                    }
+                                    button("Save").action {
+                                        save()
+                                    }
                                 }
-                            }
-                            field("Title") {
-                                textfield() {
-                                    titleField = this
-                                }
-                            }
-                            button("Save").action {
-                                save()
                             }
                         }
                     }
@@ -92,16 +111,6 @@ class MainScreen : View("Derkside") {
                 }
             }
 
-        }
-    }
-
-    private fun editPerson(person: VariableUi?) {
-        if (person != null) {
-            prevSelection?.apply {
-                nameProperty.unbindBidirectional(nameField.textProperty())
-            }
-            nameField.bind(person.nameProperty)
-            prevSelection = person
         }
     }
 
@@ -114,7 +123,7 @@ class MainScreen : View("Derkside") {
     }
 }
 
-class VariableUi(name: String? = null, value: Variable? = null) {
+class VariableUi(name: String? = null, val value: Variable? = null) {
     val nameProperty = SimpleStringProperty(this, "name", name)
     var name by nameProperty
 }
