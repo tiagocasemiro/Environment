@@ -66,7 +66,6 @@ public class FileManager {
 		BufferedReader br = null;
 		try {	
 			File file = new File(fullFileName);
-			System.out.println(fullFileName);
 			if(!file.exists()){
 				file.createNewFile();
 			}
