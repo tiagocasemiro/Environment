@@ -123,10 +123,14 @@ public class EnvironmentManager {
 	}
 	
 	public static void sourceBashProfile() throws IOException, InterruptedException {
-		final String command = "source " + BASH_PROFILE;		
-		System.out.println(command);	
-		Process process = Runtime.getRuntime().exec(command);         
-	    process.waitFor();			    
+		try {
+			final String command = "source " + BASH_PROFILE;
+			System.out.println(command);
+			Process process = Runtime.getRuntime().exec(command);
+			process.waitFor();
+		} catch (Exception e) {
+			//e.printStackTrace();
+		}
 	}
 
 	public static boolean createVariable(Variable variable) {
