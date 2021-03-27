@@ -1,19 +1,18 @@
 package br.com.environment
 
-import br.com.environment.view.MainView
-import br.com.environment.view.dialog.WarningAlert
-import javafx.scene.Parent
+import br.com.environment.view.MainScreen
 import javafx.scene.layout.BorderPane
+import javafx.stage.FileChooser
 import javafx.stage.StageStyle
 import tornadofx.*
 
-class AppView: App(MainView2::class)
+class AppView: App(MainScreen::class)
 
 fun main(args: Array<String>) {
     launch<AppView>(args)
 }
 
-val defautPadding = 10.0
+const val defaultPadding = 10.0
 
 
 class MainView2() : View("Derkside") {
@@ -21,16 +20,32 @@ class MainView2() : View("Derkside") {
     init {
         with(root) {
             center {
+
                 setPrefSize(1000.0, 600.0)
                 button("click").action {
-                    WarningAlert("Attetion, this variable will are deleted", {
+
+                    confirmation("Attetion", "this variable will are deleted!", actionFn = {
+
+                    })
+
+                /*    WarningAlert(, {
                        // replaceWith<MainView>()
                       //  replaceWith(MainView::class, ViewTransition.Fade(0.8.seconds))
 
-                    }).openModal(stageStyle = StageStyle.DECORATED)
+
+                        val dir = chooseDirectory("Select Target Directory")
+                        println(dir?.absoluteFile)
+
+                        val file = chooseFile(title = "Select file", filters = arrayOf(FileChooser.ExtensionFilter("Images", listOf("*.svg", "*.png"))))
+                        file.forEach {
+                            println(it.absoluteFile)
+                        }
+
+                    }).openModal(stageStyle = StageStyle.DECORATED)*/
                 }
             }
         }
     }
 }
+
 
