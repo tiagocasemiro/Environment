@@ -19,24 +19,29 @@ public class EnvironmentManager {
 	private static Path path = new Path();
 	private static final String VERSION = "Environment app, Version v0.9.0";
 	
-	public static void init() {
+	public static void init(String bashFile) {
+		if(bashFile != null) {
+			BASH_PROFILE = bashFile;
+		}
+
 		FileManager.readFileLineByLine(BASH_PROFILE, new LineListener() {
 			int numberOfLine = 0;
 			@Override
 			public void onLineListener(String l) {
-				Line line = new Line(l);
-								
-				if(line.getPath() != null) {
-					path = line.getPath();
-				} else {
-					line.setNumberOfLine(numberOfLine);
-					if(line.getVariable() != null) {						
-						lines.put(line.getVariable().getName(), line);						
-					} else {						
-						lines.put(line.getContent(), line);						
+				if(l.startsWith("export")) {
+					Line line = new Line(l);
+					if(line.getPath() != null) {
+						path = line.getPath();
+					} else {
+						line.setNumberOfLine(numberOfLine);
+						if(line.getVariable() != null) {
+							lines.put(line.getVariable().getName(), line);
+						} else {
+							lines.put(line.getContent(), line);
+						}
+						numberOfLine++;
 					}
-					numberOfLine++;
-				}				
+				}
 			}
 									
 			@Override
@@ -111,12 +116,17 @@ public class EnvironmentManager {
 		FileManager.writeFileWithoutDelete(BASH_PROFILE + "_old", backupBashProfile);
 		
 		String bashFile = montBashProfile();		
-		StringBuilder bashRcWithNewVariables = new StringBuilder();	
-		bashRcWithNewVariables.append("##########################################################");
-		bashRcWithNewVariables.append("### DarkSide - system of mananger environment variable ###");
-		bashRcWithNewVariables.append("##########################################################");
-		bashRcWithNewVariables.append(System.lineSeparator());
-		bashRcWithNewVariables.append(System.lineSeparator());
+		StringBuilder bashRcWithNewVariables = new StringBuilder();
+		if(!bashFile.contains("### DarkSide - system of mananger environment variable ###")) {
+			bashRcWithNewVariables.append(System.lineSeparator());
+			bashRcWithNewVariables.append("##########################################################");
+			bashRcWithNewVariables.append(System.lineSeparator());
+			bashRcWithNewVariables.append("### DarkSide - system of mananger environment variable ###");
+			bashRcWithNewVariables.append(System.lineSeparator());
+			bashRcWithNewVariables.append("##########################################################");
+			bashRcWithNewVariables.append(System.lineSeparator());
+			bashRcWithNewVariables.append(System.lineSeparator());
+		}
 		bashRcWithNewVariables.append(bashFile);
 				
 		FileManager.writeFile(BASH_PROFILE, bashRcWithNewVariables.toString());

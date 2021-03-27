@@ -11,8 +11,8 @@ import br.com.environment.model.entity.Variable;
 
 public class EnvironmentControllerGraphic {
 	
-	public EnvironmentControllerGraphic() {
-		EnvironmentManager.init();		
+	public EnvironmentControllerGraphic(String bashFile) {
+		EnvironmentManager.init(bashFile);
 	}
 		
 	public void create(Variable variable) throws IOException, InterruptedException, Exception {

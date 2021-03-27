@@ -2,6 +2,7 @@ package br.com.environment.view
 
 import br.com.environment.MainMenu
 import br.com.environment.controller.EnvironmentControllerGraphic
+import br.com.environment.currentBashFile
 import br.com.environment.defaultHeight
 import br.com.environment.defaultWidth
 import br.com.environment.model.entity.Variable
@@ -12,12 +13,15 @@ import javafx.scene.control.MenuBar
 import javafx.scene.control.TableView
 import javafx.scene.layout.BorderPane
 import javafx.scene.text.Font
+import javafx.stage.FileChooser
+import javafx.stage.FileChooser.*
 import javafx.stage.StageStyle
 import tornadofx.*
+import java.io.File
 
 class MainScreen : View("Derkside") {
     override val root = BorderPane()
-    private val controller = EnvironmentControllerGraphic()
+    private var controller = EnvironmentControllerGraphic(currentBashFile)
     var variablesTable : TableView<Variable> by singleAssign()
     class SelectedVariable(val variable: Variable) : FXEvent()
     class CleanForm : FXEvent()
@@ -40,6 +44,14 @@ class MainScreen : View("Derkside") {
                     }
                     onCreateMenu = {
                         fire(SelectedVariable(Variable()))
+                    }
+                    onSelectFileMenu = {
+                        val file = chooseFile(title = "Select file", filters = arrayOf(ExtensionFilter("Environment variable file", listOf(".*")))) {
+                            initialDirectory = File(System.getProperty("user.home"))
+                        }
+                        currentBashFile = file.first().absoluteFile.toString()
+                        controller = EnvironmentControllerGraphic(currentBashFile)
+                        variables.setAll(retrieveVariables().observable())
                     }
                 }
             }
@@ -77,7 +89,6 @@ class MainScreen : View("Derkside") {
                             formEdit(event.variable, onUpdate = {
                                 controller.update(it)
                                 information("Variable changed with success!")
-                               println("update: " + it.name)
                             }, onCreate = {
                                 controller.create(it)
                                 variables.setAll(retrieveVariables().observable())
