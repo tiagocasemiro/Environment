@@ -5,12 +5,8 @@ import br.com.environment.model.entity.Variable
 import br.com.environment.view.dialog.AboutAlert
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Orientation
-import javafx.scene.control.Label
 import javafx.scene.control.TableView
-import javafx.scene.control.TextField
-import javafx.scene.layout.Background
 import javafx.scene.layout.BorderPane
-import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.stage.StageStyle
 import tornadofx.*
@@ -19,18 +15,23 @@ class MainScreen : View("Derkside") {
     override val root = BorderPane()
     private val controller = EnvironmentControllerGraphic()
 
-    var personTable : TableView<VariableUi> by singleAssign()
+    var variablesTable : TableView<Variable> by singleAssign()
     class SelectedVariable(val variable: Variable?) : FXEvent()
+    class CleanForm : FXEvent()
+    class AddVariableToPath(val isVisible: Boolean) : FXEvent()
 
-    private var persons = retrieveVariables().observable()
+    private var variables = retrieveVariables().observable()
 
-    private fun retrieveVariables(): List<VariableUi> {
+    private fun retrieveVariables(): List<Variable> {
         return controller.list().map {
-            VariableUi(it.key, it.value)
+             it.value
         }.toList()
     }
 
-    var prevSelection: VariableUi? = null
+    private val inputValue = SimpleStringProperty()
+    private val inputPathComplemente = SimpleStringProperty()
+
+    var prevSelection: Variable? = null
 
     init {
         with(root) {
@@ -51,60 +52,82 @@ class MainScreen : View("Derkside") {
 
                         }
                     }
+                    menu("Help"){
+                        item("About").action {
+                            AboutAlert().openModal(stageStyle = StageStyle.DECORATED)
+                        }
+                        item("Shortcuts").action {
 
-                    menu("About"){
-                        item("")
-                        showingProperty().addListener( ChangeListener { _, _, newValue ->
-                            if (newValue) {
-                                AboutAlert().openModal(stageStyle = StageStyle.DECORATED)
-                            }
-                        })
+                        }
                     }
                 }
             }
-
             center {
                 splitpane(orientation = Orientation.HORIZONTAL,
-                    tableview(persons) {
-                        personTable = this
-                        column("Variable", VariableUi::nameProperty)
+                    tableview(variables) {
+                        variablesTable = this
+                        column("Variable", Variable::getName)
                         selectionModel.selectedItemProperty().onChange {
                             prevSelection = it
-                            selectedItem?.value?.let { variable ->
+                            selectedItem?.let { variable ->
                                 fire(SelectedVariable(variable))
                             }
                         }
                         contextmenu {
                             item("Delete").action {
-                                selectedItem?.let {
-                                    controller.delete(it.value)
-                                    persons.setAll(retrieveVariables().observable())
+                                selectedItem?.let { variable ->
+                                    confirmation("Attetion", "this variable will are deleted!", actionFn = {
+                                        if(it.buttonData.isDefaultButton) {
+                                            controller.delete(variable)
+                                            variables.setAll(retrieveVariables().observable())
+                                            fire(CleanForm())
+                                        }
+                                    })
                                 }
                             }
                         }
                     },
                     form {
-
-
-                        subscribe<SelectedVariable> { event->
+                        subscribe<CleanForm> {
                             clear()
-                            event.variable?.let {
+                        }
+                        subscribe<SelectedVariable> { event->
+                            fire(CleanForm())
+                            event.variable?.let { variable ->
+                                inputPathComplemente.value = variable.additionalPath
+                                inputValue.value = variable.value
                                 fieldset("Edit variable") {
-                                    label(it.name.toUpperCase()) {
+                                    label(variable.name.toUpperCase()) {
                                         font = Font.font(20.0)
                                     }
-                                    field("Name") {
-                                        textfield() {
-                                           // nameField = this
+                                    spacing = 10.0
+                                    textarea(inputValue)
+                                    checkbox("Add variable to PATH") {
+                                        isSelected = variable.isOnPath
+                                        subscribe<AddVariableToPath> { event ->
+                                            isSelected = event.isVisible
+                                        }
+                                        action {
+                                            variable.isOnPath = isSelected
+                                            fire(AddVariableToPath(isSelected))
                                         }
                                     }
-                                    field("Title") {
-                                        textfield() {
-                                           // titleField = this
+                                    vbox {
+                                        subscribe<AddVariableToPath> { event ->
+                                            isVisible = event.isVisible
                                         }
+                                        isVisible = variable.isOnPath
+                                        spacing = 20.0
+                                        label("Complement of the variable in the path")
+                                        textfield(inputPathComplemente)
                                     }
+                                    spacing = 20.0
+
                                     button("Save").action {
-                                        save()
+                                        variable.value = inputValue.value
+                                        variable.additionalPath = inputPathComplemente.value
+
+                                        save(variable)
                                     }
                                 }
                             }
@@ -118,16 +141,8 @@ class MainScreen : View("Derkside") {
         }
     }
 
-    private fun save() {
-        // Extract the selected person from the tableView
-        val person = personTable.selectedItem!!
-
-        // A real application would persist the person here
-        println("Saving ${person.name}")
+    private fun save(variable: Variable) {
+        controller.update(variable)
+        information("Variable changed with success!")
     }
-}
-
-class VariableUi(name: String? = null, val value: Variable? = null) {
-    val nameProperty = SimpleStringProperty(this, "name", name)
-    var name by nameProperty
 }
