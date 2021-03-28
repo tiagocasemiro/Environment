@@ -7,6 +7,7 @@ import br.com.environment.defaultHeight
 import br.com.environment.defaultWidth
 import br.com.environment.model.entity.Variable
 import br.com.environment.view.dialog.AboutAlert
+import br.com.environment.view.dialog.ShortcutsAlert
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Orientation
 import javafx.scene.control.MenuBar
@@ -35,6 +36,7 @@ class MainScreen : View("Derkside") {
     var prevSelection: Variable? = null
 
     init {
+        shortcuts()
         with(root) {
             setPrefSize(defaultWidth, defaultHeight)
             top {
@@ -46,12 +48,13 @@ class MainScreen : View("Derkside") {
                         fire(SelectedVariable(Variable()))
                     }
                     onSelectFileMenu = {
-                        val file = chooseFile(title = "Select file", filters = arrayOf(ExtensionFilter("Environment variable file", listOf(".*")))) {
-                            initialDirectory = File(System.getProperty("user.home"))
-                        }
-                        currentBashFile = file.first().absoluteFile.toString()
-                        controller = EnvironmentControllerGraphic(currentBashFile)
-                        variables.setAll(retrieveVariables().observable())
+                       selectFile()
+                    }
+                    onAboutMenu = {
+                        AboutAlert().openModal(stageStyle = StageStyle.DECORATED)
+                    }
+                    onShortcutsMenu = {
+                        ShortcutsAlert().openModal(stageStyle = StageStyle.DECORATED)
                     }
                 }
             }
@@ -100,6 +103,32 @@ class MainScreen : View("Derkside") {
                     setDividerPositions(0.35, 0.65)
                 }
             }
+        }
+    }
+
+    fun selectFile() {
+        val files = chooseFile(title = "Select file", filters = arrayOf(ExtensionFilter("Environment variable file", listOf(".*")))) {
+            initialDirectory = File(System.getProperty("user.home"))
+        }
+        if(files.isNotEmpty()) {
+            currentBashFile = files.first().absoluteFile.toString()
+            controller = EnvironmentControllerGraphic(currentBashFile)
+            variables.setAll(retrieveVariables().observable())
+        }
+    }
+
+    fun shortcuts() {
+        shortcut("Ctrl+N") {
+            fire(SelectedVariable(Variable()))
+        }
+        shortcut("Ctrl+O") {
+            replaceWith<PathScreen>()
+        }
+        shortcut("Ctrl+B") {
+            selectFile()
+        }
+        shortcut("Ctrl+A") {
+            AboutAlert().openModal(stageStyle = StageStyle.DECORATED)
         }
     }
 }
