@@ -1,36 +1,34 @@
 package br.com.environment.view
 
-import br.com.environment.MainMenu
 import br.com.environment.controller.EnvironmentControllerGraphic
+import br.com.environment.view.dialog.ShortcutsAlert
+import br.com.environment.view.dialog.AboutAlert
+import br.com.environment.model.entity.Variable
+import br.com.environment.MainMenu
 import br.com.environment.currentBashFile
 import br.com.environment.defaultHeight
 import br.com.environment.defaultWidth
-import br.com.environment.model.entity.Variable
-import br.com.environment.view.dialog.AboutAlert
-import br.com.environment.view.dialog.ShortcutsAlert
-import javafx.beans.property.SimpleStringProperty
-import javafx.geometry.Orientation
-import javafx.scene.control.MenuBar
+import br.com.environment.model.entity.Path
 import javafx.scene.control.TableView
 import javafx.scene.layout.BorderPane
-import javafx.scene.text.Font
-import javafx.stage.FileChooser
+import javafx.geometry.Orientation
 import javafx.stage.FileChooser.*
 import javafx.stage.StageStyle
-import tornadofx.*
 import java.io.File
+import tornadofx.*
 
 class MainScreen : View("Derkside") {
     override val root = BorderPane()
     private var controller = EnvironmentControllerGraphic(currentBashFile)
-    var variablesTable : TableView<Variable> by singleAssign()
-    class SelectedVariable(val variable: Variable) : FXEvent()
+    private var variablesTable : TableView<Variable> by singleAssign()
+    private class SelectedVariable(val variable: Variable) : FXEvent()
     class CleanForm : FXEvent()
-
+    private lateinit var tableview: TableView<Variable>
     private var variables = retrieveVariables().observable()
     private fun retrieveVariables(): List<Variable> {
         return controller.list().map {
-             it.value
+            it.value.oldAdditionalPath = it.value.additionalPath
+            it.value
         }.toList()
     }
     var prevSelection: Variable? = null
@@ -75,13 +73,15 @@ class MainScreen : View("Derkside") {
                                     confirmation("Attetion", "this variable will are deleted!", actionFn = {
                                         if(it.buttonData.isDefaultButton) {
                                             controller.delete(variable)
-                                            variables.setAll(retrieveVariables().observable())
+                                            refreshTableView()
                                             fire(CleanForm())
                                         }
                                     })
                                 }
                             }
                         }
+                    }.apply {
+                        tableview = this
                     },
                     vbox {
                         subscribe<CleanForm> {
@@ -90,11 +90,15 @@ class MainScreen : View("Derkside") {
                         subscribe<SelectedVariable> { event->
                             clear()
                             formEdit(event.variable, onUpdate = {
+                                updatePath(it)
+                                it.oldAdditionalPath = it.additionalPath
                                 controller.update(it)
                                 information("Variable changed with success!")
                             }, onCreate = {
+                                updatePath(it)
+                                it.oldAdditionalPath = it.additionalPath
                                 controller.create(it)
-                                variables.setAll(retrieveVariables().observable())
+                                refreshTableView()
                                 information("Variable created with success!")
                             }).attachTo(this@vbox)
                         }
@@ -106,18 +110,77 @@ class MainScreen : View("Derkside") {
         }
     }
 
-    fun selectFile() {
+    private fun updatePath(variable: Variable) {
+        println(variable)
+        val list = mutableListOf<String>()
+        list.addAll(controller.path.path)
+        val oldAdditionalPath = "\$${variable.name}/${variable.oldAdditionalPath}"
+        val newAdditionalPath = "\$${variable.name}/${variable.additionalPath}"
+
+        println(controller.path.value)
+        list.forEach {
+            println(it)
+        }
+        println("--------------------")
+
+        if(variable.isOnPath) {
+            if(variable.oldAdditionalPath.isNullOrEmpty()) {
+                list.add(newAdditionalPath)
+            } else {
+                list.replaceAll {
+                    if(it == oldAdditionalPath) {
+                        newAdditionalPath
+                    } else {
+                        it
+                    }
+                }
+            }
+        } else {
+            println("--->  " + variable.oldAdditionalPath)
+            if(!variable.oldAdditionalPath.isNullOrEmpty()) {
+                list.removeIf {
+                    it == oldAdditionalPath
+                }
+            }
+        }
+        val newValue = StringBuilder()
+        list.forEachIndexed { index, item ->
+            if(index == 0) {
+                newValue.append(item)
+            } else {
+                newValue.append(":$item")
+            }
+        }
+
+        val newPath =  controller.path
+        newPath.value =  newValue.toString()
+
+        println(newPath.value)
+        newPath.path.forEach {
+            println(it)
+        }
+
+        controller.savePath(newPath)
+    }
+
+    private fun selectFile() {
         val files = chooseFile(title = "Select file", filters = arrayOf(ExtensionFilter("Environment variable file", listOf(".*")))) {
             initialDirectory = File(System.getProperty("user.home"))
         }
         if(files.isNotEmpty()) {
             currentBashFile = files.first().absoluteFile.toString()
             controller = EnvironmentControllerGraphic(currentBashFile)
-            variables.setAll(retrieveVariables().observable())
+            refreshTableView()
         }
     }
 
-    fun shortcuts() {
+    private fun refreshTableView() {
+        variables.clear()
+        variables.addAll(retrieveVariables().observable())
+        tableview.refresh()
+    }
+
+    private fun shortcuts() {
         shortcut("Ctrl+N") {
             fire(SelectedVariable(Variable()))
         }
