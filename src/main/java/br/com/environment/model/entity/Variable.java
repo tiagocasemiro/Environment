@@ -5,7 +5,8 @@ public class Variable {
 	private String value;
 	private String additionalPath;
 	private boolean onPath = false;
-	
+	private String oldAdditionalPath;
+
 	public String getName() {
 		return name;
 	}
@@ -39,6 +40,14 @@ public class Variable {
 				", additionalPath='" + additionalPath + '\'' +
 				", onPath=" + onPath +
 				'}';
+	}
+
+	public String getOldAdditionalPath() {
+		return oldAdditionalPath;
+	}
+
+	public void setOldAdditionalPath(String oldAdditionalPath) {
+		this.oldAdditionalPath = oldAdditionalPath;
 	}
 }
 
