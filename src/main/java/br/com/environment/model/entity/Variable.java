@@ -30,9 +30,15 @@ public class Variable {
 	public void setOnPath(Boolean isOnPath) {
 		this.onPath = isOnPath;
 	}
+
 	@Override
 	public String toString() {
-		return getName();
+		return "Variable{" +
+				"name='" + name + '\'' +
+				", value='" + value + '\'' +
+				", additionalPath='" + additionalPath + '\'' +
+				", onPath=" + onPath +
+				'}';
 	}
 }
 
