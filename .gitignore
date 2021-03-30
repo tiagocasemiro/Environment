@@ -166,3 +166,11 @@ gradle-app.setting
 **/build/
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,gradle,kotlin
+/.idea/.gitignore
+/.idea/.name
+/.idea/compiler.xml
+/gradle/wrapper/gradle-wrapper.jar
+/gradle/wrapper/gradle-wrapper.properties
+/.idea/jarRepositories.xml
+/.idea/misc.xml
+/.idea/vcs.xml
