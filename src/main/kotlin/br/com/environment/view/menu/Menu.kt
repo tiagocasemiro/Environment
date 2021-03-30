@@ -1,10 +1,7 @@
-package br.com.environment
+package br.com.environment.view.menu
 
 import javafx.scene.layout.Pane
-import tornadofx.action
-import tornadofx.item
-import tornadofx.menu
-import tornadofx.menubar
+import tornadofx.*
 
 class MainMenu: Pane() {
     var onCreateMenu: () -> Unit = {}

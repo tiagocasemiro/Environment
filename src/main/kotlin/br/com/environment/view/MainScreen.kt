@@ -1,10 +1,14 @@
 package br.com.environment.view
 
-import br.com.environment.MainMenu
 import br.com.environment.controller.EnvironmentControllerGraphic
+import br.com.environment.currentBashFile
+import br.com.environment.defaultHeight
+import br.com.environment.defaultWidth
 import br.com.environment.model.entity.Variable
+import br.com.environment.view.*
 import br.com.environment.view.dialog.AboutAlert
 import br.com.environment.view.dialog.ShortcutsAlert
+import br.com.environment.view.menu.MainMenu
 import javafx.geometry.Orientation
 import javafx.scene.control.TableView
 import javafx.scene.layout.BorderPane

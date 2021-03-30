@@ -31,6 +31,10 @@ fun View.formEdit(variable: Variable, onUpdate: (Variable) -> Unit = {},  onCrea
                 isSelected = variable.isOnPath
                 action {
                     variable.isOnPath = isSelected
+                    if(!isSelected) {
+                        inputPathComplemente.value = ""
+                        variable.additionalPath = null
+                    }
                     fire(AddVariableToPath(isSelected))
                 }
             }
@@ -46,8 +50,11 @@ fun View.formEdit(variable: Variable, onUpdate: (Variable) -> Unit = {},  onCrea
             spacer()
             button("Save").action {
                 variable.value = inputValue.value
-                variable.additionalPath = inputPathComplemente.value
-
+                if(variable.isOnPath) {
+                    variable.additionalPath = inputPathComplemente.value
+                } else {
+                    variable.additionalPath = null
+                }
                 if(isCreate) {
                     variable.name = inputName.value
                     onCreate(variable)

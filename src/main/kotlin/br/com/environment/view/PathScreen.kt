@@ -1,6 +1,7 @@
 package br.com.environment.view
 
 import br.com.environment.controller.EnvironmentControllerGraphic
+import br.com.environment.currentBashFile
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.layout.BorderPane

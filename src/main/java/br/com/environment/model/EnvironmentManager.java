@@ -15,11 +15,13 @@ import br.com.environment.model.entity.Variable;
 
 public class EnvironmentManager {	
 	private static String BASH_PROFILE ="/home/" + System.getProperty("user.name") + "/.bash_profile";
-	private static Map<String, Line> lines = new HashMap<String, Line>();	
-	private static Path path = new Path();
 	private static final String VERSION = "Environment app, Version v0.9.0";
-	
+	private static Map<String, Line> lines;
+	private static Path path;
+
 	public static void init(String bashFile) {
+		lines = new HashMap();
+		path = new Path();
 		if(bashFile != null) {
 			BASH_PROFILE = bashFile;
 		}
@@ -98,9 +100,9 @@ public class EnvironmentManager {
 						
 		if(variable.getAdditionalPath() != null) {
 			char[] additionalPath = variable.getAdditionalPath().toCharArray();
-			String characterVaidation = String.valueOf(additionalPath[0]);
+			String characterValidation = String.valueOf(additionalPath[0]);
 			
-			if(additionalPath.length > 0 && characterVaidation.equals(File.separator)){
+			if(additionalPath.length > 0 && characterValidation.equals(File.separator)){
 				variable.setAdditionalPath(variable.getAdditionalPath().substring(1, variable.getAdditionalPath().length()));
 			}			
 			value = value + File.pathSeparator + "$" + variable.getName() + File.separator + variable.getAdditionalPath(); 			

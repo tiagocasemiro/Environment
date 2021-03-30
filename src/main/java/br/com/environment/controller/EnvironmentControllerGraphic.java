@@ -1,13 +1,12 @@
 package br.com.environment.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
-
+import java.util.HashMap;
+import java.io.IOException;
 import br.com.environment.model.EnvironmentManager;
+import br.com.environment.model.entity.Variable;
 import br.com.environment.model.entity.Line;
 import br.com.environment.model.entity.Path;
-import br.com.environment.model.entity.Variable;
 
 public class EnvironmentControllerGraphic {
 	
