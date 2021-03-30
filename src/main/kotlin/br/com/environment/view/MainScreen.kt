@@ -1,21 +1,17 @@
 package br.com.environment.view
 
-import br.com.environment.controller.EnvironmentControllerGraphic
-import br.com.environment.view.dialog.ShortcutsAlert
-import br.com.environment.view.dialog.AboutAlert
-import br.com.environment.model.entity.Variable
 import br.com.environment.MainMenu
-import br.com.environment.currentBashFile
-import br.com.environment.defaultHeight
-import br.com.environment.defaultWidth
-import br.com.environment.model.entity.Path
+import br.com.environment.controller.EnvironmentControllerGraphic
+import br.com.environment.model.entity.Variable
+import br.com.environment.view.dialog.AboutAlert
+import br.com.environment.view.dialog.ShortcutsAlert
+import javafx.geometry.Orientation
 import javafx.scene.control.TableView
 import javafx.scene.layout.BorderPane
-import javafx.geometry.Orientation
 import javafx.stage.FileChooser.*
 import javafx.stage.StageStyle
-import java.io.File
 import tornadofx.*
+import java.io.File
 
 class MainScreen : View("Derkside") {
     override val root = BorderPane()
@@ -111,17 +107,10 @@ class MainScreen : View("Derkside") {
     }
 
     private fun updatePath(variable: Variable) {
-        println(variable)
         val list = mutableListOf<String>()
         list.addAll(controller.path.path)
         val oldAdditionalPath = "\$${variable.name}/${variable.oldAdditionalPath}"
         val newAdditionalPath = "\$${variable.name}/${variable.additionalPath}"
-
-        println(controller.path.value)
-        list.forEach {
-            println(it)
-        }
-        println("--------------------")
 
         if(variable.isOnPath) {
             if(variable.oldAdditionalPath.isNullOrEmpty()) {
@@ -136,7 +125,6 @@ class MainScreen : View("Derkside") {
                 }
             }
         } else {
-            println("--->  " + variable.oldAdditionalPath)
             if(!variable.oldAdditionalPath.isNullOrEmpty()) {
                 list.removeIf {
                     it == oldAdditionalPath
@@ -151,14 +139,8 @@ class MainScreen : View("Derkside") {
                 newValue.append(":$item")
             }
         }
-
         val newPath =  controller.path
         newPath.value =  newValue.toString()
-
-        println(newPath.value)
-        newPath.path.forEach {
-            println(it)
-        }
 
         controller.savePath(newPath)
     }
