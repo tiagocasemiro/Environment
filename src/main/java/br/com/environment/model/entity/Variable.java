@@ -6,7 +6,6 @@ public class Variable {
 	private String additionalPath;
 	private boolean onPath = false;
 	private String oldAdditionalPath;
-
 	public String getName() {
 		return name;
 	}
@@ -50,14 +49,3 @@ public class Variable {
 		this.oldAdditionalPath = oldAdditionalPath;
 	}
 }
-
-/*
- * Original file
-  
-PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
-LC_ALL="pt_BR.UTF-8"
-
-
- * 
- * */
- 
