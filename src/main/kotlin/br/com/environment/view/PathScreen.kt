@@ -1,24 +1,17 @@
 package br.com.environment.view
 
 import br.com.environment.controller.EnvironmentControllerGraphic
-import br.com.environment.defaultWidth
 import javafx.geometry.Insets
 import javafx.geometry.Pos
-import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import javafx.scene.paint.Color
-import javafx.scene.paint.Paint
-
 import javafx.scene.text.Font
 import javafx.scene.text.TextAlignment
 import tornadofx.*
-import tornadofx.Stylesheet.Companion.imageView
-import tornadofx.Stylesheet.Companion.line
-import javax.swing.Icon
 
 class PathScreen : View("Path") {
     override val root = BorderPane()
-    private val controller = EnvironmentControllerGraphic()
+    private val controller = EnvironmentControllerGraphic(currentBashFile)
 
     init {
         with(root) {
