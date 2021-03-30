@@ -1,14 +1,10 @@
 package br.com.environment
 
-import br.com.environment.view.dialog.AboutAlert
-import br.com.environment.view.dialog.ShortcutsAlert
 import javafx.scene.layout.Pane
-import javafx.stage.StageStyle
 import tornadofx.action
 import tornadofx.item
 import tornadofx.menu
 import tornadofx.menubar
-
 
 class MainMenu: Pane() {
     var onCreateMenu: () -> Unit = {}
