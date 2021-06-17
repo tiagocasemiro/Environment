@@ -139,7 +139,7 @@ public class EnvironmentManager {
 	public static void sourceBashProfile() throws IOException, InterruptedException {
 		try {
 			final String command = "source " + BASH_PROFILE;
-			System.out.println(command);
+			//System.out.println(command);
 			Process process = Runtime.getRuntime().exec("/bin/bash");
 			OutputStream outputStream = process.getOutputStream();
 			PrintWriter printWriter = new PrintWriter(outputStream);
