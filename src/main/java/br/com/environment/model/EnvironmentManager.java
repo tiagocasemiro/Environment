@@ -2,6 +2,8 @@ package br.com.environment.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -138,10 +140,14 @@ public class EnvironmentManager {
 		try {
 			final String command = "source " + BASH_PROFILE;
 			System.out.println(command);
-			Process process = Runtime.getRuntime().exec(command);
+			Process process = Runtime.getRuntime().exec("/bin/bash");
+			OutputStream outputStream = process.getOutputStream();
+			PrintWriter printWriter = new PrintWriter(outputStream);
+			printWriter.println(command);
+			printWriter.close();
 			process.waitFor();
 		} catch (Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
@@ -179,8 +185,8 @@ public class EnvironmentManager {
 	
 	private static String montBashProfile() {
 		StringBuffer environment = new StringBuffer();			
-		LinkedHashSet<Line> noDuplicateLines = new LinkedHashSet<Line>(lines.values());
-		List<Line> ordenedLines = new ArrayList<Line>(noDuplicateLines);	
+		LinkedHashSet<Line> noDuplicateLines = new LinkedHashSet<>(lines.values());
+		List<Line> ordenedLines = new ArrayList<>(noDuplicateLines);
 		Collections.sort(ordenedLines);		
 		
 		for (Line line: ordenedLines) {
