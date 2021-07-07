@@ -1,0 +1,51 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" build-on-make="true" name="DarkSideFX">
+    <output-path>$PROJECT_DIR$/out/artifacts/DarkSideFX</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="br.com.darkside.Application" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="icons">
+          <JavaFxApplicationIcons>
+            <option name="linuxIcon" value="$PROJECT_DIR$/src/main/resources/darkside.png" />
+            <option name="macIcon" value="$PROJECT_DIR$/src/main/resources/darkside.png" />
+            <option name="windowsIcon" value="$PROJECT_DIR$/src/main/resources/darkside.png" />
+          </JavaFxApplicationIcons>
+        </option>
+        <option name="title" value="Darkside" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="DarkSide.jar">
+        <element id="module-output" name="DarkSide" />
+        <element id="module-output" name="DarkSide.main" />
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+        </element>
+        <element id="directory" name="libs">
+          <element id="file-copy" path="$USER_HOME$/.sdkman/candidates/gradle/7.1/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.2.60/31f1ea280ab4942ed25f91760d7170c41f78d06f/kotlin-stdlib-jdk7-1.2.60.jar" />
+          <element id="file-copy" path="$USER_HOME$/.sdkman/candidates/gradle/7.1/caches/modules-2/files-2.1/javax.json/javax.json-api/1.1.2/b38c52a6e180359108bd5e35dbeec7d1be45c535/javax.json-api-1.1.2.jar" />
+          <element id="file-copy" path="$USER_HOME$/.sdkman/candidates/gradle/7.1/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar" />
+          <element id="file-copy" path="$USER_HOME$/.sdkman/candidates/gradle/7.1/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.4.32/ef50bfa2c0491a11dcc35d9822edbfd6170e1ea2/kotlin-stdlib-common-1.4.32.jar" />
+          <element id="file-copy" path="$USER_HOME$/.sdkman/candidates/gradle/7.1/caches/modules-2/files-2.1/org.glassfish/javax.json/1.1.2/a507518970d55e9de24665af06d70aae91b4aaa1/javax.json-1.1.2.jar" />
+          <element id="file-copy" path="$USER_HOME$/.sdkman/candidates/gradle/7.1/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.2.60/33af8b35817e4c97a477a6a324032e0591d04f36/kotlin-reflect-1.2.60.jar" />
+          <element id="file-copy" path="$USER_HOME$/.sdkman/candidates/gradle/7.1/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.2.60/7d5d50242f2bd1bcb6663044fbc814e0f59255aa/kotlin-stdlib-jdk8-1.2.60.jar" />
+          <element id="file-copy" path="$USER_HOME$/.sdkman/candidates/gradle/7.1/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.4.32/461367948840adbb0839c51d91ed74ef4a9ccb52/kotlin-stdlib-1.4.32.jar" />
+          <element id="file-copy" path="$USER_HOME$/.sdkman/candidates/gradle/7.1/caches/modules-2/files-2.1/no.tornado/tornadofx/1.7.17/680562b988010420f3a97cda69fe4e6aacfef320/tornadofx-1.7.17.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/libs/javafx.graphics.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/libs/javafx.base.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/libs/javafx.fxml.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/libs/javafx.media.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/libs/javafx-swt.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/libs/javafx.controls.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/libs/javafx.web.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/libs/javafx.swing.jar" />
+        </element>
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/init.sh" />
+    </root>
+  </artifact>
+</component>
